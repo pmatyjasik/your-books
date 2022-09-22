@@ -3,7 +3,7 @@ import UnauthorizedPage from 'templates/UnauthorizedPage';
 import { Form, Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { GoogleLogin, auth } from '../firebase/firebase';
+import { GoogleLogin, auth, FacebookLogin } from '../firebase/firebase';
 import Google from 'assets/google.svg';
 import Facebook from 'assets/facebook.svg';
 import Button from 'components/Button';
@@ -22,21 +22,25 @@ type FormValues = typeof initialValues;
 
 const LoginSchema = Yup.object().shape({
 	email: Yup.string()
-		.email('Niepoprawny adres email')
-		.required('Pole wymagane'),
+		.email('Incorrect email address')
+		.required('Required field'),
 	password: Yup.string()
 		.matches(
 			/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-			'Hasło musi zawierać przynajmniej 8 znaków, w tym co najmniej jedną literę i cyfrę'
+			'The password must contain at least 8 characters, including at least one letter and a number'
 		)
-		.required('Pole wymagane'),
+		.required('Required field'),
 });
 
 const Login: NextPage = () => {
 	const router = useRouter();
 
 	const handleGoogleLogin = () => {
-		GoogleLogin(() => router.push('/profil'));
+		GoogleLogin(() => router.push('/profile'));
+	};
+
+	const handleFacebookLogin = () => {
+		FacebookLogin(() => router.push('/profile'));
 	};
 
 	const onSubmit = async (
@@ -46,9 +50,9 @@ const Login: NextPage = () => {
 		try {
 			await signInWithEmailAndPassword(auth, values.email, values.password);
 			resetForm();
-			router.push('/profil');
+			router.push('/profile');
 		} catch (e) {
-			setFieldError('message', 'Coś poszło nie tak');
+			setFieldError('message', 'Ops! Something go wrong.');
 		}
 	};
 	return (
@@ -92,7 +96,7 @@ const Login: NextPage = () => {
 									<Button outline onClick={handleGoogleLogin}>
 										<Google width={25} height={25} />
 									</Button>
-									<Button outline onClick={handleGoogleLogin}>
+									<Button outline onClick={handleFacebookLogin}>
 										<Facebook width={25} height={25} />
 									</Button>
 								</div>
