@@ -17,37 +17,41 @@ const UnauthorizedPage = ({
 	content,
 	children,
 }: UnauthorizedPageProps) => {
-	const [user, loading] = useAuthState(auth);
+	const [user, loading, error] = useAuthState(auth);
+	const isLoggedIn = user && !error;
 	const router = useRouter();
+
 	useEffect(() => {
-		if (user) {
+		if (isLoggedIn) {
 			router.push('/profil');
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [user]);
+	}, [isLoggedIn, loading]);
 	if (loading) {
 		return null;
 	}
-	if (!user) {
-		return (
-			<div>
-				<Head>
-					<title>{title}</title>
-					<meta name="description" content={content} />
-					<meta
-						name="viewport"
-						content="initial-scale=1.0, width=device-width"
-					/>
-					<link rel="icon" href="/favicon.ico" />
-				</Head>
-				<Header authorized={false} />
-				<div className="container px-5 py-3 mx-auto min-h-[85.3vh]">
-					{children}
-				</div>
-				<Footer />
-			</div>
-		);
-	}
+	return (
+		<div>
+			{!isLoggedIn && (
+				<>
+					<Head>
+						<title>{title}</title>
+						<meta name="description" content={content} />
+						<meta
+							name="viewport"
+							content="initial-scale=1.0, width=device-width"
+						/>
+						<link rel="icon" href="/favicon.ico" />
+					</Head>
+					<Header authorized={false} />
+					<div className="container px-5 py-3 mx-auto min-h-[85.3vh]">
+						{children}
+					</div>
+					<Footer />
+				</>
+			)}
+		</div>
+	);
 };
 
 export default UnauthorizedPage;
