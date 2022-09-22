@@ -5,7 +5,8 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signOut
+  signOut,
+  FacebookAuthProvider,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
@@ -24,6 +25,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const googleProvider = new GoogleAuthProvider();
+const fbProvider = new FacebookAuthProvider();
 
 const GoogleLogin = (cb) => {
   signInWithPopup(auth, googleProvider)
@@ -49,6 +51,29 @@ const GoogleLogin = (cb) => {
     });
 };
 
+const FacebookLogin = (cb) => {
+  signInWithPopup(auth, fbProvider)
+    .then((result) => {
+      // The signed-in user info.
+      const user = result.user;
+      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+      const credential = FacebookAuthProvider.credentialFromResult(result);
+      const accessToken = credential?.accessToken;
+      cb();
+      // ...
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      alert(errorMessage);
+      // const email = error.email;
+      // The AuthCredential type that was used.
+      // const credential = FacebookAuthProvider.credentialFromError(error);
+      // ...
+    });
+};
 
 const emailLogin = (cb) => {
   signInWithEmailAndPassword(auth, email.value, password.value)
@@ -83,6 +108,7 @@ export {
   auth,
   db,
   GoogleLogin,
+  FacebookLogin,
   emailLogin,
   emailRegister,
   logout,
