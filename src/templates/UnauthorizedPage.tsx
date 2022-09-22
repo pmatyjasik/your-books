@@ -23,7 +23,7 @@ const UnauthorizedPage = ({
 
 	useEffect(() => {
 		if (isLoggedIn) {
-			router.push('/profil');
+			router.push('/profile');
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isLoggedIn, loading]);

@@ -19,7 +19,7 @@ const AuthorizedPage = ({ title, content, children }: AuthorizedPageProps) => {
 
 	useEffect(() => {
 		if (!isLoggedIn && !loading) {
-			router.push('/');
+			router.push('/login');
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isLoggedIn, loading]);
