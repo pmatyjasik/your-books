@@ -11,13 +11,14 @@ import {
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyBXfLzNV0g7bD3e4zVLMqBC5PKL7IhlOGs',
-	authDomain: 'booklog-f0b07.firebaseapp.com',
-	projectId: 'booklog-f0b07',
-	storageBucket: 'booklog-f0b07.appspot.com',
-	messagingSenderId: '643523636614',
-	appId: '1:643523636614:web:4dab16ace3a82bb8ae5007',
+  apiKey: "AIzaSyDpp2AAU8HxZVZiLoDJBCTq9tomYWm4LCE",
+  authDomain: "your-books-5893e.firebaseapp.com",
+  projectId: "your-books-5893e",
+  storageBucket: "your-books-5893e.appspot.com",
+  messagingSenderId: "632523389162",
+  appId: "1:632523389162:web:65b080b39bdcdd5c123f93"
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -27,7 +28,7 @@ const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 const fbProvider = new FacebookAuthProvider();
 
-const GoogleLogin = (cb) => {
+const googleLogin = (cb) => {
   signInWithPopup(auth, googleProvider)
     .then((result) => {
       // This gives you a Google Access Token. You can use it to access the Google API.
@@ -51,7 +52,7 @@ const GoogleLogin = (cb) => {
     });
 };
 
-const FacebookLogin = (cb) => {
+const facebookLogin = (cb) => {
   signInWithPopup(auth, fbProvider)
     .then((result) => {
       // The signed-in user info.
@@ -100,15 +101,16 @@ const emailRegister = (cb) => {
     });
 };
 
-const logout = () => {
+const logout = (cb) => {
   signOut(auth);
+  cb();
 };
 
 export {
   auth,
   db,
-  GoogleLogin,
-  FacebookLogin,
+  googleLogin,
+  facebookLogin,
   emailLogin,
   emailRegister,
   logout,
