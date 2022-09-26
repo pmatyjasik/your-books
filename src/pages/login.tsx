@@ -3,7 +3,7 @@ import UnauthorizedPage from 'templates/UnauthorizedPage';
 import { Form, Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { GoogleLogin, auth, FacebookLogin } from '../firebase/firebase';
+import { googleLogin, auth, facebookLogin } from '../firebase/firebase';
 import Google from 'assets/google.svg';
 import Facebook from 'assets/facebook.svg';
 import Button from 'components/Button';
@@ -36,11 +36,11 @@ const Login: NextPage = () => {
 	const router = useRouter();
 
 	const handleGoogleLogin = () => {
-		GoogleLogin(() => router.push('/profile'));
+		googleLogin(() => router.push('/profile'));
 	};
 
 	const handleFacebookLogin = () => {
-		FacebookLogin(() => router.push('/profile'));
+		facebookLogin(() => router.push('/profile'));
 	};
 
 	const onSubmit = async (
