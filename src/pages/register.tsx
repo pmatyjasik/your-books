@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import UnauthorizedPage from 'templates/UnauthorizedPage';
 import { Form, Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { googleLogin, auth, facebookLogin } from '../firebase/firebase';
 import Google from 'assets/google.svg';
 import Facebook from 'assets/facebook.svg';
@@ -56,9 +56,18 @@ const Register: NextPage = () => {
 		{ resetForm, setFieldError }: FormikHelpers<FormValues>
 	) => {
 		try {
-			await signInWithEmailAndPassword(auth, values.email, values.password);
+			const res = await createUserWithEmailAndPassword(
+				auth,
+				values.email,
+				values.password
+			);
+			if (res.user && auth.currentUser) {
+				updateProfile(auth.currentUser, {
+					displayName: `${values.firstName} ${values.lastName}`,
+				});
+			}
 			resetForm();
-			router.push('/profile');
+			router.push('/login');
 		} catch (e) {
 			setFieldError('message', 'Ops! Something go wrong.');
 		}
