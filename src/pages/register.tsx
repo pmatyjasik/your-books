@@ -122,7 +122,9 @@ const Register: NextPage = () => {
 									placeholder="Repeat password"
 									onChange={handleChange('repeatPassword')}
 								/>
-								<p className="text-red-300">{errors.message}</p>
+								<p className="self-center max-w-sm mb-4 text-sm text-center text-red-300">
+									{errors.message}
+								</p>
 								<Button onClick={handleSubmit}>Register</Button>
 								<div className="flex flex-row justify-between mt-4">
 									<Button outline onClick={handleGoogleLogin}>
