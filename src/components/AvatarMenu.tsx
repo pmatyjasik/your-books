@@ -3,6 +3,7 @@ import Avatar from 'assets/avatar.svg';
 import { useCloseComponent } from 'hooks/useCloseComponent';
 import AvatarMenuItemu from 'components/AvatarMenuItem';
 import router from 'next/router';
+import { logout } from '../firebase/firebase';
 
 const AvatarMenu = () => {
 	const wrapperRef = useRef<HTMLDivElement>(null);
@@ -10,6 +11,10 @@ const AvatarMenu = () => {
 
 	const toggle = () => {
 		setIsOpen((prev) => !prev);
+	};
+
+	const handleLogout = () => {
+		logout(() => router.push('/profile'));
 	};
 
 	return (
@@ -33,9 +38,7 @@ const AvatarMenu = () => {
 						<AvatarMenuItemu onClick={() => router.push('/ustawienia')}>
 							Ustawienia
 						</AvatarMenuItemu>
-						<AvatarMenuItemu onClick={() => router.push('/ustawienia')}>
-							Wyloguj
-						</AvatarMenuItemu>
+						<AvatarMenuItemu onClick={handleLogout}>Wyloguj</AvatarMenuItemu>
 					</div>
 				</div>
 			)}
