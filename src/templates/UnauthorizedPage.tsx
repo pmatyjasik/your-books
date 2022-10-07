@@ -44,7 +44,7 @@ const UnauthorizedPage = ({
 						<link rel="icon" href="/favicon.ico" />
 					</Head>
 					<Header authorized={false} />
-					<div className="container px-5 py-3 mx-auto min-h-[85.3vh]">
+					<div className="container px-5 py-14 mx-auto min-h-[85.3vh]">
 						{children}
 					</div>
 					<Footer />
