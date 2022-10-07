@@ -14,7 +14,7 @@ const AvatarMenu = () => {
 	};
 
 	const handleLogout = () => {
-		logout(() => router.push('/profile'));
+		logout(() => router.push('/login'));
 	};
 
 	return (
