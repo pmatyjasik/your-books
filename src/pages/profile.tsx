@@ -5,7 +5,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, logout } from '../firebase/firebase';
 import StatsItem from 'components/StatsItem';
 import router from 'next/router';
-
+import Lottie from 'lottie-react';
+import profile from 'assets/profile.json';
 const Profil: NextPage = () => {
 	const [user] = useAuthState(auth);
 
@@ -15,36 +16,48 @@ const Profil: NextPage = () => {
 
 	return (
 		<AuthorizedPage title={'Profile'} content={'Profile'}>
-			<div className="w-full border rounded-lg shadow-md bg-secondary">
-				<ul className="text-xl font-bold text-center text-white divide-x rounded-lg sm:flex">
-					<li className="w-full">
-						<p className="inline-block w-full p-4 text-white rounded-t-lg bg-primary">
-							{user?.displayName || 'User name'}
-						</p>
+			<div className="rounded-lg shadow-xl bg-secondary">
+				<div className="w-full border rounded-t-lg shadow-md bg-secondary">
+					<ul className="text-xl font-bold text-center text-white divide-x sm:flex">
 						<li className="w-full">
-							<p className="inline-block w-full p-4 text-base text-white rounded-t-lg bg-secondary">
-								Your statistics
+							<p className="inline-block w-full p-4 text-white rounded-t-lg bg-primary">
+								{user?.displayName || 'User name'}
 							</p>
+							<li className="w-full">
+								<p className="inline-block w-full p-4 text-base text-white bg-secondary">
+									Your statistics
+								</p>
+							</li>
 						</li>
-					</li>
-				</ul>
-				<div className="border-t border-secondary">
-					<dl className="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-white sm:grid-cols-2 xl:grid-cols-4 sm:p-8">
-						<StatsItem title={'10'} subtitle={'To read'} />
-						<StatsItem title={'3'} subtitle={'Reading'} />
-						<StatsItem title={'7'} subtitle={'Read'} />
-						<StatsItem title={'0'} subtitle={'Notes'} />
-					</dl>
+					</ul>
+					<div className="border-t border-secondary">
+						<dl className="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-white sm:grid-cols-2 xl:grid-cols-4 sm:p-8">
+							<StatsItem title={'10'} subtitle={'To read'} />
+							<StatsItem title={'3'} subtitle={'Reading'} />
+							<StatsItem title={'7'} subtitle={'Read'} />
+							<StatsItem title={'0'} subtitle={'Notes'} />
+						</dl>
+					</div>
 				</div>
-			</div>
-			<div className="grid gap-4 py-10 mb-8 rounded-lg md:mb-12 md:grid-cols-2">
-				<GridItem cardTitle="Books" onClick={() => router.push('/books')} />
-				<GridItem cardTitle="Notes" onClick={() => router.push('/notes')} />
-				<GridItem
-					cardTitle="Settings"
-					onClick={() => router.push('/settings')}
-				/>
-				<GridItem cardTitle="Logout" onClick={handleLogout} logout={true} />
+				<div className="items-center block md:flex">
+					<div className="grid gap-2 py-2 rounded-lg md:w-1/2 md:grid-cols-1">
+						<GridItem cardTitle="News" onClick={() => router.push('/news')} />
+						<GridItem cardTitle="Books" onClick={() => router.push('/books')} />
+						<GridItem cardTitle="Notes" onClick={() => router.push('/notes')} />
+						<GridItem
+							cardTitle="Settings"
+							onClick={() => router.push('/settings')}
+						/>
+						<GridItem cardTitle="Logout" onClick={handleLogout} logout={true} />
+					</div>
+					<div className="hidden md:block">
+						<Lottie
+							animationData={profile}
+							loop={true}
+							className="md:h-96 lg:h-[30rem]"
+						/>
+					</div>
+				</div>
 			</div>
 		</AuthorizedPage>
 	);
