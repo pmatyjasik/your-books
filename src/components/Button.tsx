@@ -9,7 +9,6 @@ interface ButtonProps {
 const Button = ({ children, outline = false, onClick }: ButtonProps) => {
 	return (
 		<button
-			type="button"
 			onClick={onClick}
 			className={`${
 				outline
