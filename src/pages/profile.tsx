@@ -54,7 +54,7 @@ const Profil: NextPage = () => {
 						<Lottie
 							animationData={profile}
 							loop={true}
-							className="md:h-96 lg:h-[30rem]"
+							className="md:h-80 lg:h-[35rem]"
 						/>
 					</div>
 				</div>
