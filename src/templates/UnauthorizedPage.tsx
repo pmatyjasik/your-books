@@ -10,19 +10,21 @@ interface UnauthorizedPageProps {
 	children: React.ReactNode;
 	title: string;
 	content: string;
+	Custom404?: boolean;
 }
 
 const UnauthorizedPage = ({
 	title,
 	content,
 	children,
+	Custom404,
 }: UnauthorizedPageProps) => {
 	const [user, loading, error] = useAuthState(auth);
 	const isLoggedIn = user && !error;
 	const router = useRouter();
 
 	useEffect(() => {
-		if (isLoggedIn) {
+		if (isLoggedIn && !Custom404) {
 			router.push('/profile');
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -32,24 +34,17 @@ const UnauthorizedPage = ({
 	}
 	return (
 		<div>
-			{!isLoggedIn && (
-				<>
-					<Head>
-						<title>{title}</title>
-						<meta name="description" content={content} />
-						<meta
-							name="viewport"
-							content="initial-scale=1.0, width=device-width"
-						/>
-						<link rel="icon" href="/favicon.ico" />
-					</Head>
-					<Header authorized={false} />
-					<div className="container px-5 py-6 mx-auto min-h-[85.3vh]">
-						{children}
-					</div>
-					<Footer />
-				</>
-			)}
+			<Head>
+				<title>{title}</title>
+				<meta name="description" content={content} />
+				<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+				<link rel="icon" href="/favicon.ico" />
+			</Head>
+			<Header authorized={false} />
+			<div className="container px-5 py-6 mx-auto min-h-[85.3vh]">
+				{children}
+			</div>
+			<Footer />
 		</div>
 	);
 };
