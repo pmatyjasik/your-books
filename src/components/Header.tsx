@@ -47,7 +47,7 @@ const Header = ({ authorized }: HeaderProps) => {
 							{!openSearch && (
 								<button
 									onClick={showSearch}
-									className="block px-4 py-2 mr-4 text-sm font-medium text-white rounded-lg bg-primary md:hidden"
+									className="block px-4 py-2 mr-2 text-sm font-medium text-white rounded-lg bg-primary lg:hidden"
 								>
 									<Search className="text-white" />
 								</button>
@@ -57,7 +57,7 @@ const Header = ({ authorized }: HeaderProps) => {
 					)}
 				</div>
 				{authorized && (
-					<div className="items-center justify-between hidden md:flex md:w-auto md:order-1 h-[46px]">
+					<div className="items-center justify-between hidden lg:flex lg:w-auto lg:order-1 h-[46px]">
 						<form>
 							<div className="relative sm:w-[25rem] lg:w-[30rem]">
 								<SearchForm />
@@ -69,7 +69,7 @@ const Header = ({ authorized }: HeaderProps) => {
 			{authorized
 				? openSearch && (
 						<div
-							className="container block mx-auto mt-4 md:hidden"
+							className="container block mx-auto mt-4 lg:hidden"
 							ref={wrapperRef}
 						>
 							<form>
