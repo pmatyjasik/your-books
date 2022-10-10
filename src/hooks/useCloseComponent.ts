@@ -14,7 +14,7 @@ export function useCloseComponent(ref: React.RefObject<HTMLElement>) {
 			}
 		}
 
-		function handleOnScroll(event: Event) {
+		function handleOnScroll() {
 			if (ref.current && isOpen) {
 				setIsOpen((prev) => !prev);
 			}
