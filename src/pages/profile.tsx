@@ -23,13 +23,13 @@ const Profil: NextPage = () => {
 							<p className="inline-block w-full p-4 text-white rounded-t-lg bg-primary">
 								{user?.displayName || 'User name'}
 							</p>
-							<li className="w-full">
-								<p className="inline-block w-full p-4 text-base text-white bg-secondary">
-									Your statistics
-								</p>
-							</li>
 						</li>
 					</ul>
+					<div className="w-full text-center">
+						<p className="inline-block w-full p-4 text-base text-white bg-secondary">
+							Your statistics
+						</p>
+					</div>
 					<div className="border-t border-secondary">
 						<dl className="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-white sm:grid-cols-2 xl:grid-cols-4 sm:p-8">
 							<StatsItem title={'10'} subtitle={'To read'} />
