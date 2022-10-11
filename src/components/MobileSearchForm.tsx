@@ -1,9 +1,9 @@
 import React from 'react';
 import Search from 'assets/search.svg';
 
-const SearchForm = () => {
+const MobileSearchForm = () => {
 	return (
-		<div className="relative sm:w-[25rem] lg:w-[30rem]">
+		<div className="relative">
 			<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none focus-visible:outline-none">
 				<Search className="font-semibold text-gray-500" />
 			</div>
@@ -28,4 +28,4 @@ const SearchForm = () => {
 	);
 };
 
-export default SearchForm;
+export default MobileSearchForm;
