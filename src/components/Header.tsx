@@ -6,6 +6,7 @@ import AvatarMenu from 'components/AvatarMenu';
 import SearchForm from 'components/SearchForm';
 import Search from 'assets/search.svg';
 import { useCloseComponent } from 'hooks/useCloseComponent';
+import MobileSearchForm from './MobileSearchForm';
 
 interface HeaderProps {
 	authorized: boolean;
@@ -58,11 +59,7 @@ const Header = ({ authorized }: HeaderProps) => {
 				</div>
 				{authorized && (
 					<div className="items-center justify-between hidden lg:flex lg:w-auto lg:order-1 h-[46px]">
-						<form>
-							<div className="relative sm:w-[25rem] lg:w-[30rem]">
-								<SearchForm />
-							</div>
-						</form>
+						<SearchForm />
 					</div>
 				)}
 			</div>
@@ -72,11 +69,7 @@ const Header = ({ authorized }: HeaderProps) => {
 							className="container block mx-auto mt-4 lg:hidden"
 							ref={wrapperRef}
 						>
-							<form>
-								<div className="relative">
-									<SearchForm />
-								</div>
-							</form>
+							<MobileSearchForm />
 						</div>
 				  )
 				: null}
