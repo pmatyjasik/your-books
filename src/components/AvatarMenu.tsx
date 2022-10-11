@@ -18,7 +18,6 @@ const AvatarMenu = () => {
 
 	const toggle = () => {
 		setIsOpen((prev) => !prev);
-		console.log(user);
 	};
 
 	const handleLogout = () => {
