@@ -69,7 +69,7 @@ const Header = ({ authorized }: HeaderProps) => {
 							className="container block mx-auto mt-4 lg:hidden"
 							ref={wrapperRef}
 						>
-							<MobileSearchForm />
+							<SearchForm mobile={true} />
 						</div>
 				  )
 				: null}
