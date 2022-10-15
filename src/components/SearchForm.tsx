@@ -1,36 +1,19 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import Search from 'assets/search.svg';
 import useDebounce from 'hooks/useDebounce';
 import { useQuery } from 'react-query';
 import SearchItem from './SearchItem';
-
+import { fetchBooks } from 'service/books';
 interface SearchFormProps {
+	isOpen: boolean;
+	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	mobile?: boolean;
 }
 
-interface SearchResponse {
-	id: string;
-	volumeInfo: {
-		title: string;
-		authors: string[];
-		categories: string[];
-		publishedDate: number;
-		description: string;
-		imageLinks?: { smallThumbnail: URL; thumbnail: URL };
-	};
-}
-
-const fetchBooks = async (queryParam: string) => {
-	const res = await fetch(
-		`https://www.googleapis.com/books/v1/volumes?q=${queryParam}`
-	);
-	return res.json();
-};
-
-const SearchForm = ({ mobile }: SearchFormProps) => {
+const SearchForm = ({ mobile, isOpen, setIsOpen }: SearchFormProps) => {
 	const [searchValue, setSearchValue] = useState('');
-	const debouncedSearchValue = useDebounce(searchValue, 300);
 
+	const debouncedSearchValue = useDebounce(searchValue, 300);
 	const { isLoading, isError, isSuccess, data } = useQuery(
 		['q=', debouncedSearchValue],
 		() => fetchBooks(debouncedSearchValue),
@@ -39,21 +22,30 @@ const SearchForm = ({ mobile }: SearchFormProps) => {
 		}
 	);
 
+	const handleChange = ({
+		target: { value },
+	}: ChangeEvent<HTMLInputElement>) => {
+		setSearchValue(value);
+	};
+
+	if (!isOpen && mobile) {
+		return null;
+	}
+
 	return (
 		<>
 			<div className={`relative ${!mobile && 'sm:w-[25rem] lg:w-[30rem]'}`}>
 				<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none focus-visible:outline-none">
 					<Search className="font-semibold text-gray-500" />
 				</div>
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-					}}
-				>
+				<form onSubmit={(e) => e.preventDefault()}>
 					<input
 						className="block w-full p-4 pl-10 text-base text-white bg-gray-700 border border-gray-600 rounded-lg focus-visible:outline-none"
 						placeholder="Search"
-						onChange={({ target: { value } }) => setSearchValue(value)}
+						onFocus={() => {
+							setIsOpen(true);
+						}}
+						onChange={handleChange}
 						value={searchValue}
 					/>
 					<button
@@ -64,34 +56,34 @@ const SearchForm = ({ mobile }: SearchFormProps) => {
 					</button>
 				</form>
 			</div>
-			<div className="z-50">
-				<div
-					className={`block bg-gray-700 rounded-lg max-h-96 overflow-y-auto ${
-						!mobile && 'sm:w-[25rem] lg:w-[30rem]'
-					}`}
-				>
-					{isLoading && <p className="pl-10 text-xl text-white">Loading...</p>}
-					{isError && <p className="pl-10 text-xl text-white">Error</p>}
-					{isSuccess &&
-						data?.items.map(
-							({
-								id,
-								volumeInfo: {
-									title,
-									authors,
-									categories,
-									publishedDate,
-									description,
-									imageLinks,
-								},
-							}: SearchResponse) => {
-								return (
-									<SearchItem key={id} id={id} title={title} author={''} />
-								);
-							}
+			{isOpen && (
+				<div className="z-50">
+					<div
+						className={`block bg-gray-700 rounded-lg max-h-96 overflow-y-auto ${
+							!mobile && 'sm:w-[25rem] lg:w-[30rem]'
+						}`}
+					>
+						{isLoading && (
+							<p className="pl-10 text-xl text-white">Loading...</p>
 						)}
+						{isError && <p className="pl-10 text-xl text-white">Error</p>}
+						{isSuccess &&
+							data?.items?.map(({ id, volumeInfo: { title } }) => {
+								return (
+									<SearchItem
+										key={id}
+										id={id}
+										title={title}
+										author={''}
+										// onClick={() => {
+										// 	setIsOpen(false);
+										// }}
+									/>
+								);
+							})}
+					</div>
 				</div>
-			</div>
+			)}
 		</>
 	);
 };

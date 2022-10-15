@@ -12,12 +12,8 @@ interface HeaderProps {
 }
 
 const Header = ({ authorized }: HeaderProps) => {
-	const wrapperRef = useRef<HTMLDivElement>(null);
-	const [openSearch, setOpenSearch] = useCloseComponent(wrapperRef);
-
-	const showSearch = () => {
-		setOpenSearch((prev) => !prev);
-	};
+	const wrapperRef = useRef<HTMLDivElement | null>(null);
+	const { isOpen, setIsOpen, toggleOpen } = useCloseComponent(wrapperRef);
 
 	return (
 		<nav className="px-4 py-6 sm:px-4 bg-secondary">
@@ -28,7 +24,19 @@ const Header = ({ authorized }: HeaderProps) => {
 					</a>
 				</Link>
 				<div className="flex justify-center sm:mt-0 md:order-2">
-					{!authorized && (
+					{authorized ? (
+						<>
+							{!isOpen && (
+								<button
+									onClick={toggleOpen}
+									className="block px-4 py-2 mr-2 text-sm font-medium text-white rounded-lg bg-primary lg:hidden"
+								>
+									<Search className="text-white" />
+								</button>
+							)}
+							<AvatarMenu />
+						</>
+					) : (
 						<div className="flex">
 							<div className="mr-1 md:mr-5">
 								<Button outline onClick={() => router.push('/login')}>
@@ -42,36 +50,24 @@ const Header = ({ authorized }: HeaderProps) => {
 							</div>
 						</div>
 					)}
-					{authorized && (
-						<>
-							{!openSearch && (
-								<button
-									onClick={showSearch}
-									className="block px-4 py-2 mr-2 text-sm font-medium text-white rounded-lg bg-primary lg:hidden"
-								>
-									<Search className="text-white" />
-								</button>
-							)}
-							<AvatarMenu />
-						</>
-					)}
 				</div>
 				{authorized && (
-					<div className="items-center justify-between hidden lg:flex lg:w-auto lg:order-1 h-[46px] lg:flex-col">
-						<SearchForm />
+					<div
+						ref={wrapperRef}
+						className="items-center justify-between hidden lg:flex lg:w-auto lg:order-1 h-[46px] lg:flex-col"
+					>
+						<SearchForm isOpen={isOpen} setIsOpen={setIsOpen} />
 					</div>
 				)}
 			</div>
-			{authorized
-				? openSearch && (
-						<div
-							className="container block mx-auto mt-4 lg:hidden"
-							ref={wrapperRef}
-						>
-							<SearchForm mobile={true} />
-						</div>
-				  )
-				: null}
+			{authorized && (
+				<div
+					className="container block mx-auto mt-4 lg:hidden"
+					ref={wrapperRef}
+				>
+					<SearchForm mobile isOpen={isOpen} setIsOpen={setIsOpen} />
+				</div>
+			)}
 		</nav>
 	);
 };
