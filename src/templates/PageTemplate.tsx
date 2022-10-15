@@ -4,12 +4,13 @@ import Footer from 'components/Footer';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase/firebase';
 import { useRouter } from 'next/router';
+import Loader from 'components/Loader';
 
 interface AuthorizedPageProps {
 	children: React.ReactNode;
 }
 
-const unAuthorizedPages = ['/', '/login', '/register', '/404'];
+const unAuthorizedPages = ['/', '/login', '/register'];
 
 const PageTemplate = ({ children }: AuthorizedPageProps) => {
 	const [currentUser, loading] = useAuthState(auth);
@@ -17,19 +18,23 @@ const PageTemplate = ({ children }: AuthorizedPageProps) => {
 	const authorizedPage = !unAuthorizedPages.includes(router.route);
 
 	useEffect(() => {
+		if (router.route === '/404') return;
 		if (currentUser && !authorizedPage) {
 			router.push('/profile');
 		} else if (authorizedPage && !currentUser) {
-			router.push('/login');
+			setTimeout(() => {
+				router.push('/login');
+			}, 300);
 		}
 	}, [authorizedPage, currentUser, router]);
 
 	if (
-		loading ||
-		(authorizedPage && !currentUser) ||
-		(!authorizedPage && currentUser)
+		router.route !== '/404' &&
+		(loading ||
+			(authorizedPage && !currentUser) ||
+			(!authorizedPage && currentUser))
 	) {
-		return null;
+		return <Loader />;
 	}
 
 	return (
