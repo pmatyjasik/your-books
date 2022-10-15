@@ -3,6 +3,7 @@ import React from 'react';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 import { useRouter } from 'next/router';
 import { fetchBook } from 'service/books';
+import HeadInformation from 'components/HeadInformation';
 
 const Book: NextPage = () => {
 	const router = useRouter();
@@ -17,6 +18,10 @@ const Book: NextPage = () => {
 
 	return (
 		<>
+			<HeadInformation
+				title={data.volumeInfo.title}
+				content={data.volumeInfo.title}
+			/>
 			{isLoading && <p className="pl-10 text-xl text-black">Loading...</p>}
 			{isError && <p className="pl-10 text-xl text-black">Error</p>}
 			{isSuccess && (

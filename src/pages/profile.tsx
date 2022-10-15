@@ -6,6 +6,8 @@ import StatsItem from 'components/StatsItem';
 import router from 'next/router';
 import Lottie from 'lottie-react';
 import profile from 'assets/profile.json';
+import HeadInformation from 'components/HeadInformation';
+
 const Profil: NextPage = () => {
 	const [user] = useAuthState(auth);
 
@@ -15,6 +17,7 @@ const Profil: NextPage = () => {
 
 	return (
 		<>
+			<HeadInformation title={'Profile'} content={'Profile'} />
 			<div className="rounded-lg shadow-xl bg-secondary">
 				<div className="w-full border rounded-t-lg shadow-md bg-secondary">
 					<ul className="text-xl font-bold text-center text-white divide-x sm:flex">
