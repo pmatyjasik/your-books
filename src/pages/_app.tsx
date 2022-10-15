@@ -7,6 +7,7 @@ import {
 	DehydratedState,
 } from 'react-query';
 import 'styles/style.css';
+import PageTemplate from 'templates/PageTemplate';
 
 function MyApp({
 	Component,
@@ -16,7 +17,9 @@ function MyApp({
 	return (
 		<QueryClientProvider client={queryClient}>
 			<Hydrate state={pageProps.dehydratedState}>
-				<Component {...pageProps} />
+				<PageTemplate>
+					<Component {...pageProps} />
+				</PageTemplate>
 			</Hydrate>
 		</QueryClientProvider>
 	);
