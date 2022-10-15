@@ -25,10 +25,7 @@ const LoginSchema = Yup.object().shape({
 		.email('Incorrect email address')
 		.required('Required field'),
 	password: Yup.string()
-		.matches(
-			/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-			'The password must contain at least 8 characters, including at least one letter and a number. No special characters.'
-		)
+		.matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Enter correct data')
 		.required('Required field'),
 });
 
@@ -94,7 +91,9 @@ const Login: NextPage = () => {
 								<p className="self-center max-w-sm mb-4 text-sm text-center text-red-300">
 									{errors.message}
 								</p>
-								<Button onClick={handleSubmit}>Login</Button>
+								<Button onClick={handleSubmit} submit>
+									Login
+								</Button>
 								<div className="flex flex-row justify-between mt-4">
 									<Button outline onClick={handleGoogleLogin}>
 										<Google width={25} height={25} />

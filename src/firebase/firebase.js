@@ -43,7 +43,7 @@ const googleLogin = (cb) => {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
-      alert(errorMessage);
+      console.log(errorMessage);
       // The email of the user's account used.
       const email = error.email;
       // The AuthCredential type that was used.
@@ -64,15 +64,7 @@ const facebookLogin = (cb) => {
       // ...
     })
     .catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      alert(errorMessage);
-      // const email = error.email;
-      // The AuthCredential type that was used.
-      // const credential = FacebookAuthProvider.credentialFromError(error);
-      // ...
+      console.log(error)
     });
 };
 
@@ -84,7 +76,7 @@ const emailLogin = (cb) => {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      alert(errorMessage);
+      console.log(errorMessage);
       console.log(errorCode, errorMessage);
     });
 };
@@ -97,7 +89,7 @@ const emailRegister = (cb) => {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      alert(errorMessage);
+      console.log(errorMessage);
     });
 };
 

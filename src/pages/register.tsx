@@ -135,7 +135,9 @@ const Register: NextPage = () => {
 								<p className="self-center max-w-sm mb-4 text-sm text-center text-red-300">
 									{errors.message}
 								</p>
-								<Button onClick={handleSubmit}>Register</Button>
+								<Button onClick={handleSubmit} submit>
+									Register
+								</Button>
 								<div className="flex flex-row justify-between mt-4">
 									<Button outline onClick={handleGoogleLogin}>
 										<Google width={25} height={25} />

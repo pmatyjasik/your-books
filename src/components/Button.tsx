@@ -4,11 +4,18 @@ interface ButtonProps {
 	children: React.ReactNode;
 	onClick: () => void;
 	outline?: boolean;
+	submit?: boolean;
 }
 
-const Button = ({ children, onClick, outline = false }: ButtonProps) => {
+const Button = ({
+	children,
+	onClick,
+	outline = false,
+	submit = false,
+}: ButtonProps) => {
 	return (
 		<button
+			type={submit ? 'submit' : 'button'}
 			onClick={onClick}
 			className={`${
 				outline
