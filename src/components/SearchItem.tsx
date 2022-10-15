@@ -10,7 +10,7 @@ interface SearchItemProps {
 const SearchItem = ({ title, author, id }: SearchItemProps) => {
 	return (
 		<Link href={`/book/${id}`} key={id}>
-			<p className="pl-10 text-xl text-white">
+			<p className="pl-10 text-xl text-white cursor-pointer">
 				{title}
 				{author}
 			</p>
@@ -18,4 +18,4 @@ const SearchItem = ({ title, author, id }: SearchItemProps) => {
 	);
 };
 
-export default SearchItem;
+export default React.memo(SearchItem);
