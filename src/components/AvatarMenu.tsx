@@ -12,20 +12,16 @@ import {
 import { CgProfile } from 'react-icons/cg';
 
 const AvatarMenu = () => {
-	const wrapperRef = useRef<HTMLDivElement>(null);
-	const [isOpen, setIsOpen] = useCloseComponent(wrapperRef);
+	const wrapperRef = useRef<HTMLDivElement | null>(null);
+	const { isOpen, toggleOpen } = useCloseComponent(wrapperRef);
 	const [user] = useAuthState(auth);
-
-	const toggle = () => {
-		setIsOpen((prev) => !prev);
-	};
 
 	const handleLogout = () => {
 		logout(() => router.push('/login'));
 	};
 
 	return (
-		<div ref={wrapperRef} className="relative" onClick={toggle}>
+		<div ref={wrapperRef} className="relative" onClick={toggleOpen}>
 			{
 				<div className="relative inline-flex items-center justify-center px-4 py-2 overflow-hidden bg-gray-600 rounded-full">
 					<p className="flex items-center text-lg font-medium text-white">

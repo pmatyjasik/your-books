@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import AuthorizedPage from 'templates/AuthorizedPage';
 import GridItem from 'components/GridItem';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, logout } from '../firebase/firebase';
@@ -15,7 +14,7 @@ const Profil: NextPage = () => {
 	};
 
 	return (
-		<AuthorizedPage title={'Profile'} content={'Profile'}>
+		<>
 			<div className="rounded-lg shadow-xl bg-secondary">
 				<div className="w-full border rounded-t-lg shadow-md bg-secondary">
 					<ul className="text-xl font-bold text-center text-white divide-x sm:flex">
@@ -59,7 +58,7 @@ const Profil: NextPage = () => {
 					</div>
 				</div>
 			</div>
-		</AuthorizedPage>
+		</>
 	);
 };
 
