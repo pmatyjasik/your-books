@@ -9,7 +9,7 @@ export const fetchBooks = async (
 	return res.json();
 };
 
-export const fetchBook = async (id: string): Promise<SearchResponse> => {
+export const fetchBook = async (id: string) => {
 	const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}`);
 	return res.json();
 };
