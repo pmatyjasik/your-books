@@ -4,6 +4,7 @@ import useDebounce from 'hooks/useDebounce';
 import { useQuery } from 'react-query';
 import SearchItem from './SearchItem';
 import { fetchBooks } from 'service/books';
+import { SpinnerCircular } from 'spinners-react';
 interface SearchFormProps {
 	isOpen: boolean;
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -64,9 +65,21 @@ const SearchForm = ({ mobile, isOpen, setIsOpen }: SearchFormProps) => {
 						}`}
 					>
 						{isLoading && (
-							<p className="pl-10 text-xl text-white">Loading...</p>
+							<p className="flex justify-center">
+								<SpinnerCircular
+									size={40}
+									thickness={180}
+									speed={270}
+									color="#355FE5"
+									secondaryColor="#111827"
+								/>
+							</p>
 						)}
-						{isError && <p className="pl-10 text-xl text-white">Error</p>}
+						{isError && (
+							<p className="pl-10 text-xl text-center text-white">
+								Ops! Something go wrong.
+							</p>
+						)}
 						{isSuccess &&
 							data?.items?.map(({ id, volumeInfo: { title } }) => {
 								return (
