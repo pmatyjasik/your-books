@@ -2,11 +2,11 @@ import React from 'react';
 
 interface ButtonProps {
 	children: React.ReactNode;
-	outline?: boolean;
 	onClick: () => void;
+	outline?: boolean;
 }
 
-const Button = ({ children, outline = false, onClick }: ButtonProps) => {
+const Button = ({ children, onClick, outline = false }: ButtonProps) => {
 	return (
 		<button
 			onClick={onClick}
