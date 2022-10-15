@@ -2,7 +2,6 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import React from 'react';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 import { useRouter } from 'next/router';
-import AuthorizedPage from 'templates/AuthorizedPage';
 
 const fetchBook = async (id: string) => {
 	const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}`);
@@ -21,7 +20,7 @@ const Book: NextPage = () => {
 	);
 
 	return (
-		<AuthorizedPage title={'Results'} content={'Results'}>
+		<>
 			{isLoading && <p className="pl-10 text-xl text-black">Loading...</p>}
 			{isError && <p className="pl-10 text-xl text-black">Error</p>}
 			{isSuccess && (
@@ -40,7 +39,7 @@ const Book: NextPage = () => {
 					<p className="pl-10 text-xl text-black">{data.volumeInfo.authors}</p>
 				</>
 			)}
-		</AuthorizedPage>
+		</>
 	);
 };
 
