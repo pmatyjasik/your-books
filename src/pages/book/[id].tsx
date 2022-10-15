@@ -2,11 +2,7 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import React from 'react';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 import { useRouter } from 'next/router';
-
-const fetchBook = async (id: string) => {
-	const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}`);
-	return res.json();
-};
+import { fetchBook } from 'service/books';
 
 const Book: NextPage = () => {
 	const router = useRouter();

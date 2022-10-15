@@ -75,9 +75,9 @@ const SearchForm = ({ mobile, isOpen, setIsOpen }: SearchFormProps) => {
 										id={id}
 										title={title}
 										author={''}
-										// onClick={() => {
-										// 	setIsOpen(false);
-										// }}
+										onClick={() => {
+											setIsOpen(false);
+										}}
 									/>
 								);
 							})}
