@@ -1,20 +1,60 @@
 import Link from 'next/link';
 import React from 'react';
+import { AiOutlineBook } from 'react-icons/ai';
+import Image from 'next/image';
 
 interface SearchItemProps {
 	title: string;
-	author: string;
+	authors: string[];
 	id: string;
+	publishedDate?: string;
+	imageLinks?: { smallThumbnail: string; thumbnail: string };
 	onClick?: () => void;
 }
 
-const SearchItem = ({ title, author, id, onClick }: SearchItemProps) => {
+const SearchItem = ({
+	title,
+	authors,
+	id,
+	publishedDate,
+	imageLinks,
+	onClick,
+}: SearchItemProps) => {
 	return (
 		<Link href={`/book/${id}`} key={id}>
-			<p className="pl-10 text-xl text-white cursor-pointer" onClick={onClick}>
-				{title}
-				{author}
-			</p>
+			<div
+				className="flex flex-row pt-2 pb-2 shadow-md cursor-pointer hover:bg-primary"
+				onClick={onClick}
+			>
+				<div className="flex items-center justify-center w-1/5">
+					{imageLinks ? (
+						// eslint-disable-next-line jsx-a11y/alt-text
+						<Image
+							loader={() => imageLinks.smallThumbnail}
+							src={imageLinks.smallThumbnail}
+							width={50}
+							height={50}
+						/>
+					) : (
+						<AiOutlineBook className="text-4xl text-white w-[50px] h-[50px] opacity-50" />
+					)}
+				</div>
+				<div className="flex flex-col w-4/5">
+					<p className="pr-2 text-sm font-bold text-white">{title}</p>
+					{authors ? (
+						<p className="pr-2 text-sm text-white">{authors[0]}</p>
+					) : (
+						<p className="pr-2 text-sm text-white">-</p>
+					)}
+					{publishedDate ? (
+						<p className="pr-2 text-sm text-white">
+							{publishedDate?.split('-')[0]}
+						</p>
+					) : (
+						<p className="pr-2 text-sm text-white">-</p>
+					)}
+				</div>
+			</div>
 		</Link>
 	);
 };

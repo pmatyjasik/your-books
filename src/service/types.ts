@@ -4,9 +4,9 @@ interface Book {
 		title: string;
 		authors: string[];
 		categories: string[];
-		publishedDate: number;
+		publishedDate: string;
 		description: string;
-		imageLinks?: { smallThumbnail: URL; thumbnail: URL };
+		imageLinks?: { smallThumbnail: string; thumbnail: string };
 	};
 }
 interface SearchResponse {

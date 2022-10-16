@@ -60,7 +60,7 @@ const SearchForm = ({ mobile, isOpen, setIsOpen }: SearchFormProps) => {
 			{isOpen && (
 				<div className="z-50">
 					<div
-						className={`block bg-gray-700 rounded-lg max-h-96 overflow-y-auto ${
+						className={`scrollbar-track-rounded-lg scrollbar-thumb-rounded-lg block bg-gray-700 rounded-lg max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary${
 							!mobile && 'sm:w-[25rem] lg:w-[30rem]'
 						}`}
 					>
@@ -81,19 +81,26 @@ const SearchForm = ({ mobile, isOpen, setIsOpen }: SearchFormProps) => {
 							</p>
 						)}
 						{isSuccess &&
-							data?.items?.map(({ id, volumeInfo: { title } }) => {
-								return (
-									<SearchItem
-										key={id}
-										id={id}
-										title={title}
-										author={''}
-										onClick={() => {
-											setIsOpen(false);
-										}}
-									/>
-								);
-							})}
+							data?.items?.map(
+								({
+									id,
+									volumeInfo: { title, publishedDate, authors, imageLinks },
+								}) => {
+									return (
+										<SearchItem
+											key={id}
+											id={id}
+											title={title}
+											authors={authors}
+											publishedDate={publishedDate}
+											imageLinks={imageLinks}
+											onClick={() => {
+												setIsOpen(false);
+											}}
+										/>
+									);
+								}
+							)}
 					</div>
 				</div>
 			)}
