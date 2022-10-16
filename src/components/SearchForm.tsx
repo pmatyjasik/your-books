@@ -5,6 +5,8 @@ import { useQuery } from 'react-query';
 import SearchItem from './SearchItem';
 import { fetchBooks } from 'service/books';
 import { SpinnerCircular } from 'spinners-react';
+import { GoArrowLeft, GoArrowRight } from 'react-icons/go';
+
 interface SearchFormProps {
 	isOpen: boolean;
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,11 +15,12 @@ interface SearchFormProps {
 
 const SearchForm = ({ mobile, isOpen, setIsOpen }: SearchFormProps) => {
 	const [searchValue, setSearchValue] = useState('');
+	const [startIndex, setStartIndex] = useState(0);
 
 	const debouncedSearchValue = useDebounce(searchValue, 300);
 	const { isLoading, isError, isSuccess, data } = useQuery(
-		['q=', debouncedSearchValue],
-		() => fetchBooks(debouncedSearchValue),
+		['q=', debouncedSearchValue, startIndex],
+		() => fetchBooks(debouncedSearchValue, startIndex),
 		{
 			enabled: debouncedSearchValue.length > 0,
 		}
@@ -27,6 +30,7 @@ const SearchForm = ({ mobile, isOpen, setIsOpen }: SearchFormProps) => {
 		target: { value },
 	}: ChangeEvent<HTMLInputElement>) => {
 		setSearchValue(value);
+		setStartIndex(0);
 	};
 
 	if (!isOpen && mobile) {
@@ -101,6 +105,24 @@ const SearchForm = ({ mobile, isOpen, setIsOpen }: SearchFormProps) => {
 									);
 								}
 							)}
+
+						{isSuccess && (
+							<div className="flex items-center justify-between px-10 my-2">
+								<GoArrowLeft
+									onClick={() =>
+										setStartIndex((prev) => {
+											return prev < 20 ? 0 : prev - 10;
+										})
+									}
+									className="text-white w-[25px] h-[35px]"
+								/>
+
+								<GoArrowRight
+									onClick={() => setStartIndex((prev) => prev + 10)}
+									className="text-white w-[25px] h-[35px]"
+								/>
+							</div>
+						)}
 					</div>
 				</div>
 			)}
