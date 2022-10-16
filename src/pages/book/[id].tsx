@@ -4,6 +4,7 @@ import { dehydrate, QueryClient, useQuery } from 'react-query';
 import { useRouter } from 'next/router';
 import { fetchBook } from 'service/books';
 import HeadInformation from 'components/HeadInformation';
+import AuthorizedPage from 'hoc/Authorized';
 
 const Book: NextPage = () => {
 	const router = useRouter();
@@ -44,7 +45,7 @@ const Book: NextPage = () => {
 	);
 };
 
-export default Book;
+export default AuthorizedPage(Book);
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const id = context.params?.id as string;

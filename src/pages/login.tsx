@@ -11,6 +11,7 @@ import login from 'assets/login.json';
 import { useRouter } from 'next/router';
 import Lottie from 'lottie-react';
 import HeadInformation from 'components/HeadInformation';
+import UnAuthorizedPage from 'hoc/UnAuthorized';
 
 const initialValues = {
 	email: '',
@@ -111,4 +112,4 @@ const Login: NextPage = () => {
 	);
 };
 
-export default Login;
+export default UnAuthorizedPage(Login);

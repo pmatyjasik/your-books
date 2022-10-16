@@ -11,6 +11,7 @@ import register from 'assets/register.json';
 import { useRouter } from 'next/router';
 import Lottie from 'lottie-react';
 import HeadInformation from 'components/HeadInformation';
+import UnAuthorizedPage from 'hoc/UnAuthorized';
 
 const initialValues = {
 	firstName: '',
@@ -155,4 +156,4 @@ const Register: NextPage = () => {
 	);
 };
 
-export default Register;
+export default UnAuthorizedPage(Register);

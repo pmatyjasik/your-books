@@ -1,4 +1,5 @@
 import HeadInformation from 'components/HeadInformation';
+import UnAuthorizedPage from 'hoc/UnAuthorized';
 import type { NextPage } from 'next';
 
 const Home: NextPage = () => {
@@ -10,4 +11,4 @@ const Home: NextPage = () => {
 	);
 };
 
-export default Home;
+export default UnAuthorizedPage(Home);

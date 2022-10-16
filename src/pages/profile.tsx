@@ -7,6 +7,7 @@ import router from 'next/router';
 import Lottie from 'lottie-react';
 import profile from 'assets/profile.json';
 import HeadInformation from 'components/HeadInformation';
+import AuthorizedPage from 'hoc/Authorized';
 
 const Profil: NextPage = () => {
 	const [user] = useAuthState(auth);
@@ -65,4 +66,4 @@ const Profil: NextPage = () => {
 	);
 };
 
-export default Profil;
+export default AuthorizedPage(Profil);
