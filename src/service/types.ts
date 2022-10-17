@@ -6,7 +6,7 @@ interface Book {
 		categories: string[];
 		publishedDate: string;
 		description: string;
-		imageLinks?: { smallThumbnail: string; thumbnail: string };
+		imageLinks: { smallThumbnail: string; thumbnail: string };
 	};
 }
 interface SearchResponse {
