@@ -28,12 +28,13 @@ const SearchItem = ({
 			>
 				<div className="flex items-center justify-center w-1/5">
 					{imageLinks ? (
-						// eslint-disable-next-line jsx-a11y/alt-text
 						<Image
 							loader={() => imageLinks.smallThumbnail}
+							unoptimized={true}
 							src={imageLinks.smallThumbnail}
 							width={50}
 							height={50}
+							alt="Thumnbail"
 						/>
 					) : (
 						<AiOutlineBook className="text-4xl text-white w-[50px] h-[50px] opacity-50" />
