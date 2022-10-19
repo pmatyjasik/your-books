@@ -8,7 +8,7 @@ interface SearchItemProps {
 	authors: string[];
 	id: string;
 	publishedDate?: string;
-	imageLinks?: { smallThumbnail: string; thumbnail: string };
+	imageLinks?: { thumbnail: string };
 	onClick?: () => void;
 }
 
