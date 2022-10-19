@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Button from 'components/Button';
 import Link from 'next/link';
 import router from 'next/router';
 import AvatarMenu from 'components/AvatarMenu';
 import SearchForm from 'components/SearchForm';
 import Search from 'assets/search.svg';
-import { useCloseComponent } from 'hooks/useCloseComponent';
+import { useClickAway, useWindowSize } from 'react-use';
 
 interface HeaderProps {
 	authorized: boolean;
@@ -13,7 +13,13 @@ interface HeaderProps {
 
 const Header = ({ authorized }: HeaderProps) => {
 	const wrapperRef = useRef<HTMLDivElement | null>(null);
-	const { isOpen, setIsOpen, toggleOpen } = useCloseComponent(wrapperRef);
+	const [isOpen, setIsOpen] = useState(false);
+	const { width } = useWindowSize();
+	useClickAway(wrapperRef, () => {
+		setIsOpen(false);
+	});
+
+	const toggleOpen = () => setIsOpen((p) => !p);
 
 	return (
 		<nav className="px-4 py-6 sm:px-4 bg-secondary">
@@ -60,10 +66,10 @@ const Header = ({ authorized }: HeaderProps) => {
 					</div>
 				)}
 			</div>
-			{authorized && (
+			{authorized && width < 1024 && (
 				<div
-					className="container block mx-auto mt-4 lg:hidden"
 					ref={wrapperRef}
+					className="container block mx-auto mt-4 lg:hidden"
 				>
 					<SearchForm mobile isOpen={isOpen} setIsOpen={setIsOpen} />
 				</div>

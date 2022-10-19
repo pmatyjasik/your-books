@@ -19,7 +19,7 @@ const SearchForm = ({ mobile, isOpen, setIsOpen }: SearchFormProps) => {
 
 	const debouncedSearchValue = useDebounce(searchValue, 300);
 	const { isLoading, isError, isSuccess, data } = useQuery(
-		['q=', debouncedSearchValue, startIndex],
+		[`q=${debouncedSearchValue}`, startIndex],
 		() => fetchBooks(debouncedSearchValue, startIndex),
 		{
 			enabled: debouncedSearchValue.length > 0,
@@ -38,8 +38,8 @@ const SearchForm = ({ mobile, isOpen, setIsOpen }: SearchFormProps) => {
 	}
 
 	return (
-		<>
-			<div className={`relative ${!mobile && 'sm:w-[25rem] lg:w-[30rem]'}`}>
+		<div className="z-50">
+			<div className={`relative ${!mobile && 'sm:w-[25rem] lg:w-[30rem]'} `}>
 				<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none focus-visible:outline-none">
 					<Search className="font-semibold text-gray-500" />
 				</div>
@@ -62,9 +62,9 @@ const SearchForm = ({ mobile, isOpen, setIsOpen }: SearchFormProps) => {
 				</form>
 			</div>
 			{isOpen && (
-				<div className="z-50">
+				<>
 					<div
-						className={`scrollbar-track-rounded-lg scrollbar-thumb-rounded-lg block bg-gray-700 rounded-lg max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary${
+						className={`scrollbar-track-rounded-lg scrollbar-thumb-rounded-lg bg-gray-700 rounded-lg max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary${
 							!mobile && 'sm:w-[25rem] lg:w-[30rem]'
 						}`}
 					>
@@ -124,9 +124,9 @@ const SearchForm = ({ mobile, isOpen, setIsOpen }: SearchFormProps) => {
 							</div>
 						)}
 					</div>
-				</div>
+				</>
 			)}
-		</>
+		</div>
 	);
 };
 

@@ -29,9 +29,9 @@ const SearchItem = ({
 				<div className="flex items-center justify-center w-1/5">
 					{imageLinks ? (
 						<Image
-							loader={() => imageLinks.smallThumbnail}
+							loader={() => imageLinks.thumbnail}
 							unoptimized={true}
-							src={imageLinks.smallThumbnail}
+							src={imageLinks.thumbnail}
 							width={50}
 							height={50}
 							alt="Thumnbail"
