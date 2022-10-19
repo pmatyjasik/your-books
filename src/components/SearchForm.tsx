@@ -114,12 +114,16 @@ const SearchForm = ({ mobile, isOpen, setIsOpen }: SearchFormProps) => {
 											return prev < 20 ? 0 : prev - 10;
 										})
 									}
-									className="text-white w-[25px] h-[35px]"
+									className={`${
+										startIndex < 10
+											? 'opacity-20 text-white w-[25px] h-[35px]'
+											: 'opacity-100 text-white w-[25px] h-[35px] cursor-pointer'
+									}`}
 								/>
 
 								<GoArrowRight
 									onClick={() => setStartIndex((prev) => prev + 10)}
-									className="text-white w-[25px] h-[35px]"
+									className="text-white w-[25px] h-[35px] cursor-pointer"
 								/>
 							</div>
 						)}
