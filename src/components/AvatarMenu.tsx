@@ -1,9 +1,9 @@
-import React, { useRef } from 'react';
-import { useCloseComponent } from 'hooks/useCloseComponent';
+import React, { useRef, useState } from 'react';
 import AvatarMenuItemu from 'components/AvatarMenuItem';
 import router from 'next/router';
 import { auth, logout } from '../firebase/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useClickAway } from 'react-use';
 import {
 	BsFillArrowDownCircleFill,
 	BsFillArrowUpCircleFill,
@@ -13,7 +13,13 @@ import { CgProfile } from 'react-icons/cg';
 
 const AvatarMenu = () => {
 	const wrapperRef = useRef<HTMLDivElement | null>(null);
-	const { isOpen, toggleOpen } = useCloseComponent(wrapperRef);
+	const [isOpen, setIsOpen] = useState(false);
+	useClickAway(wrapperRef, () => {
+		setIsOpen(false);
+	});
+
+	const toggleOpen = () => setIsOpen((p) => !p);
+
 	const [user] = useAuthState(auth);
 
 	const handleLogout = () => {
