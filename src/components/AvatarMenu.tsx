@@ -32,7 +32,7 @@ const AvatarMenu = () => {
 				<div className="relative inline-flex items-center justify-center px-4 py-2 overflow-hidden bg-gray-600 rounded-full">
 					<p className="flex items-center text-lg font-medium text-white">
 						<span className="hidden md:block">
-							{user?.displayName ? user?.displayName : ''}
+							{user?.displayName ? user?.displayName : ' '}
 						</span>
 						<CgProfile className="block w-8 h-8 md:hidden" />
 						{isOpen ? (

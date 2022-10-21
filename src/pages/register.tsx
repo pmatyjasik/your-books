@@ -68,7 +68,6 @@ const Register: NextPage = () => {
 				});
 			}
 			resetForm();
-			router.push('/login');
 		} catch (e) {
 			setFieldError('message', 'Ops! Something go wrong.');
 		}
