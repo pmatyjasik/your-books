@@ -1,8 +1,8 @@
 module.exports = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   images: {
     domains: [
-      // "firebasestorage.googleapis.com",
+      "firebasestorage.googleapis.com",
       "books.google.com"
     ],
   },
