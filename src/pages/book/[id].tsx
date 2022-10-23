@@ -1,5 +1,5 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 import { useRouter } from 'next/router';
 import { fetchBook } from 'service/books';
@@ -10,9 +10,19 @@ import Image from 'next/image';
 import { AiOutlineBook } from 'react-icons/ai';
 import { Book } from 'service/types';
 import Button from 'components/Button';
+import {
+	auth,
+	addBookToCollection,
+	deleteBookFromCollection,
+	db,
+} from '../../firebase/firebase';
+import { getDoc, doc } from 'firebase/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const Book: NextPage = () => {
+	const [booknInCollection, setBooknInCollection] = useState<boolean>();
 	const router = useRouter();
+	const [user] = useAuthState(auth);
 	const bookID = typeof router.query?.id === 'string' ? router.query.id : '';
 	const { isSuccess, data, isLoading, isError } = useQuery(
 		['volumes', bookID],
@@ -21,6 +31,38 @@ const Book: NextPage = () => {
 			enabled: bookID.length > 0,
 		}
 	);
+
+	useEffect(() => {
+		const isBookAdded = async (bookID: string, userUID: string) => {
+			try {
+				const res = await getDoc(doc(db, 'Users', userUID, 'Books', bookID));
+				setBooknInCollection(res.exists());
+			} catch (error) {
+				console.error(error);
+			}
+		};
+		if (user) isBookAdded(bookID, user?.uid);
+	}, [bookID, user, booknInCollection]);
+
+	const onAdd = () => {
+		if (user) {
+			addBookToCollection(
+				bookID,
+				user?.uid,
+				'To read',
+				title,
+				imageLinks?.thumbnail ? imageLinks?.thumbnail : ''
+			);
+			setBooknInCollection((prev) => !prev);
+		}
+	};
+
+	const onDelete = () => {
+		if (user) {
+			deleteBookFromCollection(bookID, user?.uid);
+			setBooknInCollection((prev) => !prev);
+		}
+	};
 
 	const {
 		volumeInfo: {
@@ -56,10 +98,10 @@ const Book: NextPage = () => {
 				</p>
 			)}
 			{isSuccess && (
-				<div className="flex justify-center">
+				<div className="flex justify-center rounded-lg">
 					<div className="flex flex-col w-full rounded-lg shadow-xl lg:flex-row xl:w-4/5 bg-secondary">
 						<div className="w-full border rounded-lg shadow-md lg:w-2/5 border-primary ">
-							<div className="flex items-center justify-center p-2 bg-primary">
+							<div className="flex items-center justify-center p-2 rounded-lg bg-primary">
 								{imageLinks?.thumbnail ? (
 									<Image
 										loader={() => imageLinks.thumbnail}
@@ -101,7 +143,11 @@ const Book: NextPage = () => {
 									{categories ? categories : ''}
 								</p>
 								<div className="flex justify-center p-4">
-									<Button>Add to table</Button>
+									{booknInCollection ? (
+										<Button onClick={onDelete}>Remove from table</Button>
+									) : (
+										<Button onClick={onAdd}>Add to table</Button>
+									)}
 								</div>
 							</div>
 						</div>

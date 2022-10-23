@@ -7,9 +7,18 @@ import {
 	createUserWithEmailAndPassword,
 	signOut,
 	FacebookAuthProvider,
-	updateProfile,
 } from 'firebase/auth';
-import { getFirestore, getDoc, setDoc, doc } from 'firebase/firestore';
+import {
+	getFirestore,
+	getDoc,
+	setDoc,
+	doc,
+	collection,
+	getDocs,
+	deleteDoc,
+	orderBy,
+	query,
+} from 'firebase/firestore';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyDpp2AAU8HxZVZiLoDJBCTq9tomYWm4LCE',
@@ -90,6 +99,42 @@ const handleLougout = () => {
 	signOut(auth);
 };
 
+const addBookToCollection = async (
+	bookID: string,
+	userUID: string,
+	status: string,
+	title: string,
+	image: string
+) => {
+	try {
+		await setDoc(doc(db, 'Users', userUID, 'Books', bookID), {
+			bookID: bookID,
+			title: title,
+			image: image,
+			status: status,
+			date: new Date(),
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+const deleteBookFromCollection = async (bookID: string, userUID: string) => {
+	try {
+		await deleteDoc(doc(db, 'Users', userUID, 'Books', bookID));
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+const getBooksFromCollection = async (userUID: string) => {
+	const anserwsCollectionRef = collection(db, 'Users', userUID, 'Books');
+	const anserwsQuery = query(anserwsCollectionRef, orderBy('date', 'desc'));
+
+	const answersData = await getDocs(anserwsQuery);
+	answersData.forEach((doc) => console.log(doc.data()));
+};
+
 export {
 	auth,
 	db,
@@ -98,4 +143,7 @@ export {
 	signInWithCredentials,
 	signUpWithCredentials,
 	handleLougout,
+	addBookToCollection,
+	deleteBookFromCollection,
+	getBooksFromCollection,
 };
