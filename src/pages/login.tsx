@@ -1,14 +1,16 @@
 import type { NextPage } from 'next';
 import { Form, Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { googleLogin, auth, facebookLogin } from '../firebase/firebase';
+import {
+	signInWithGoogle,
+	signInWithFacebook,
+	signInWithCredentials,
+} from '../firebase/firebase';
 import Google from 'assets/google.svg';
 import Facebook from 'assets/facebook.svg';
 import Button from 'components/Button';
 import Input from 'components/Input';
 import login from 'assets/login.json';
-import { useRouter } from 'next/router';
 import Lottie from 'lottie-react';
 import HeadInformation from 'components/HeadInformation';
 import UnAuthorizedPage from 'hoc/UnAuthorized';
@@ -31,28 +33,18 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login: NextPage = () => {
-	const router = useRouter();
-
-	const handleGoogleLogin = () => {
-		googleLogin(() => router.push('/profile'));
-	};
-
-	const handleFacebookLogin = () => {
-		facebookLogin(() => router.push('/profile'));
-	};
-
 	const onSubmit = async (
 		values: FormValues,
 		{ resetForm, setFieldError }: FormikHelpers<FormValues>
 	) => {
 		try {
-			await signInWithEmailAndPassword(auth, values.email, values.password);
+			await signInWithCredentials(values.email, values.password);
 			resetForm();
-			router.push('/profile');
 		} catch (e) {
-			setFieldError('message', 'Ops! Something go wrong.');
+			setFieldError('message', 'Coś poszło nie tak');
 		}
 	};
+
 	return (
 		<>
 			<HeadInformation title={'Login'} content={'Login'} />
@@ -96,10 +88,10 @@ const Login: NextPage = () => {
 									Login
 								</Button>
 								<div className="flex flex-row justify-between mt-4">
-									<Button outline onClick={handleGoogleLogin}>
+									<Button outline onClick={signInWithGoogle}>
 										<Google width={25} height={25} />
 									</Button>
-									<Button outline onClick={handleFacebookLogin}>
+									<Button outline onClick={signInWithFacebook}>
 										<Facebook width={25} height={25} />
 									</Button>
 								</div>

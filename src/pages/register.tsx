@@ -1,21 +1,21 @@
 import type { NextPage } from 'next';
 import { Form, Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { googleLogin, auth, facebookLogin } from '../firebase/firebase';
+import {
+	signInWithGoogle,
+	signInWithFacebook,
+	signUpWithCredentials,
+} from '../firebase/firebase';
 import Google from 'assets/google.svg';
 import Facebook from 'assets/facebook.svg';
 import Button from 'components/Button';
 import Input from 'components/Input';
 import register from 'assets/register.json';
-import { useRouter } from 'next/router';
 import Lottie from 'lottie-react';
 import HeadInformation from 'components/HeadInformation';
 import UnAuthorizedPage from 'hoc/UnAuthorized';
 
 const initialValues = {
-	firstName: '',
-	lastName: '',
 	email: '',
 	password: '',
 	repeatPassword: '',
@@ -25,8 +25,6 @@ const initialValues = {
 type FormValues = typeof initialValues;
 
 const RegisterSchema = Yup.object().shape({
-	firstName: Yup.string().required('Required field'),
-	lastName: Yup.string().required('Required field'),
 	email: Yup.string()
 		.email('Incorrect email addressl')
 		.required('Required field'),
@@ -42,34 +40,15 @@ const RegisterSchema = Yup.object().shape({
 });
 
 const Register: NextPage = () => {
-	const router = useRouter();
-
-	const handleGoogleLogin = () => {
-		googleLogin(() => router.push('/profile'));
-	};
-
-	const handleFacebookLogin = () => {
-		facebookLogin(() => router.push('/profile'));
-	};
-
 	const onSubmit = async (
 		values: FormValues,
 		{ resetForm, setFieldError }: FormikHelpers<FormValues>
 	) => {
 		try {
-			const res = await createUserWithEmailAndPassword(
-				auth,
-				values.email,
-				values.password
-			);
-			if (res.user && auth.currentUser) {
-				updateProfile(auth.currentUser, {
-					displayName: `${values.firstName} ${values.lastName}`,
-				});
-			}
+			await signUpWithCredentials(values.email, values.password);
 			resetForm();
 		} catch (e) {
-			setFieldError('message', 'Ops! Something go wrong.');
+			setFieldError('message', 'Coś poszło nie tak');
 		}
 	};
 	return (
@@ -92,22 +71,6 @@ const Register: NextPage = () => {
 					>
 						{({ values, errors, handleChange, handleSubmit, touched }) => (
 							<Form className="flex flex-col w-64 sm:w-80">
-								<Input
-									type="text"
-									value={values.firstName}
-									error={touched.firstName ? errors.firstName : ''}
-									required
-									placeholder="First name"
-									onChange={handleChange('firstName')}
-								/>
-								<Input
-									type="text"
-									value={values.lastName}
-									error={touched.lastName ? errors.lastName : ''}
-									required
-									placeholder="Last name"
-									onChange={handleChange('lastName')}
-								/>
 								<Input
 									type="email"
 									value={values.email}
@@ -139,10 +102,10 @@ const Register: NextPage = () => {
 									Register
 								</Button>
 								<div className="flex flex-row justify-between mt-4">
-									<Button outline onClick={handleGoogleLogin}>
+									<Button outline onClick={signInWithGoogle}>
 										<Google width={25} height={25} />
 									</Button>
-									<Button outline onClick={handleFacebookLogin}>
+									<Button outline onClick={signInWithFacebook}>
 										<Facebook width={25} height={25} />
 									</Button>
 								</div>
