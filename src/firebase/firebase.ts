@@ -12,6 +12,7 @@ import {
 	getFirestore,
 	getDoc,
 	setDoc,
+	updateDoc,
 	doc,
 	collection,
 	getDocs,
@@ -19,6 +20,9 @@ import {
 	orderBy,
 	query,
 } from 'firebase/firestore';
+import { emptyBookColumns } from 'pages/books/utils';
+import type { BookColumns } from 'pages/books/types';
+import { Book, BookStatus } from '../firebase/types';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyDpp2AAU8HxZVZiLoDJBCTq9tomYWm4LCE',
@@ -99,13 +103,13 @@ const handleLougout = () => {
 	signOut(auth);
 };
 
-const addBookToCollection = async (
-	bookID: string,
-	userUID: string,
-	status: string,
-	title: string,
-	image: string
-) => {
+const addBookToCollection = async ({
+	bookID,
+	image,
+	status,
+	title,
+	userUID,
+}: Book) => {
 	try {
 		await setDoc(doc(db, 'Users', userUID, 'Books', bookID), {
 			bookID: bookID,
@@ -127,23 +131,65 @@ const deleteBookFromCollection = async (bookID: string, userUID: string) => {
 	}
 };
 
-const getBooksFromCollection = async (userUID: string) => {
-	const anserwsCollectionRef = collection(db, 'Users', userUID, 'Books');
-	const anserwsQuery = query(anserwsCollectionRef, orderBy('date', 'desc'));
+const updateBookInCollection = async (bookId: string, status: BookStatus) => {
+	const userUID = auth.currentUser?.uid;
+	if (!userUID) {
+		return;
+	}
+	try {
+		await updateDoc(doc(db, 'Users', userUID, 'Books', bookId), { status });
+	} catch (error) {
+		console.error(error);
+	}
+};
 
-	const answersData = await getDocs(anserwsQuery);
-	answersData.forEach((doc) => console.log(doc.data()));
+const objectKeys = <Obj extends {}>(obj: Obj): (keyof Obj)[] => {
+	return Object.keys(obj) as (keyof Obj)[];
+};
+
+const getBooksFromCollection = async (userUID: string) => {
+	try {
+		const anserwsCollectionRef = collection(db, 'Users', userUID, 'Books');
+		const anserwsQuery = query(anserwsCollectionRef, orderBy('date', 'desc'));
+
+		const answersData = await getDocs(anserwsQuery);
+
+		const data = answersData.docs.map((doc) => doc.data()) as Book[];
+		const columnsObject: BookColumns = emptyBookColumns;
+		objectKeys(BookStatus).forEach((key) => {
+			const columnData = data.filter((item) => item.status === BookStatus[key]);
+			columnsObject[key] = {
+				name: key,
+				items: columnData,
+			};
+		});
+		return columnsObject;
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+const isBookAdded = async (bookID: string, userUID: string) => {
+	try {
+		const res = await getDoc(doc(db, 'Users', userUID, 'Books', bookID));
+		return res.exists();
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
 };
 
 export {
 	auth,
 	db,
 	signInWithGoogle,
+	getBooksFromCollection,
 	signInWithFacebook,
 	signInWithCredentials,
 	signUpWithCredentials,
 	handleLougout,
 	addBookToCollection,
 	deleteBookFromCollection,
-	getBooksFromCollection,
+	updateBookInCollection,
+	isBookAdded,
 };
