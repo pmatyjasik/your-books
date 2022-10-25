@@ -10,7 +10,7 @@ const GridItem = ({ cardTitle, onClick, logout }: GridItemProps) => {
 	return (
 		<div
 			onClick={onClick}
-			className={`flex-col items-center justify-center p-8 text-center rounded-lg bg-secondary  ${
+			className={`cursor-pointer flex-col items-center justify-center p-8 text-center rounded-lg bg-secondary  ${
 				logout ? `hover:bg-red-600` : `hover:bg-primary`
 			}`}
 		>
