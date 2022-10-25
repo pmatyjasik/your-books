@@ -26,7 +26,8 @@
 					"{}": false
 				}
 			}
-		]
+		],
+		"@typescript-eslint/no-var-requires": 0
 	},
 	"plugins": ["@typescript-eslint"]
 }

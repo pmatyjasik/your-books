@@ -3,7 +3,7 @@ import Search from 'assets/search.svg';
 import useDebounce from 'hooks/useDebounce';
 import { useQuery } from 'react-query';
 import SearchItem from './SearchItem';
-import { fetchBooks } from 'service/books';
+import { fetchBooks } from 'service/book/fetchBooks';
 import { SpinnerCircular } from 'spinners-react';
 import { GoArrowLeft, GoArrowRight } from 'react-icons/go';
 

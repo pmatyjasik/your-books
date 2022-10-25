@@ -8,10 +8,10 @@ import {
 	auth,
 	getBooksFromCollection,
 	updateBookInCollection,
-} from '../../firebase/firebase';
+} from '../firebase/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { BookColumns, isValidColumn } from './types';
-import { BookStatus } from '../../firebase/types';
+import { BookColumns, isValidColumn } from 'service/Books/types';
+import { BookStatus } from '../firebase/types';
 import Link from 'next/link';
 import { AiOutlineBook } from 'react-icons/ai';
 import Image from 'next/image';
@@ -92,7 +92,7 @@ const Books: NextPage = () => {
 						<p className="inline-block w-full p-4 text-white rounded-t-lg bg-primary"></p>
 					</li>
 				</ul>
-				<div className="flex h-full overflow-x-auto lg:overflow-hidden lg:justify-center scrollbar-track-rounded-lg scrollbar-thumb-rounded-lg scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary">
+				<div className="flex h-full overflow-x-auto lg:overflow-hidden lg:justify-evenly scrollbar-track-rounded-lg scrollbar-thumb-rounded-lg scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary">
 					<DragDropContext onDragEnd={onDragEnd(columns, setColumns)}>
 						{Object.entries(columns).map(([columnId, column]) => {
 							if (!isValidColumn(column)) {

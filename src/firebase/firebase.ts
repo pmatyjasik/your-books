@@ -20,8 +20,8 @@ import {
 	orderBy,
 	query,
 } from 'firebase/firestore';
-import { emptyBookColumns } from 'pages/books/utils';
-import type { BookColumns } from 'pages/books/types';
+import { emptyBookColumns } from 'service/Books/utils';
+import type { BookColumns } from 'service/Books/types';
 import { Book, BookStatus } from '../firebase/types';
 
 const firebaseConfig = {

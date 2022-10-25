@@ -2,13 +2,13 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import React, { useEffect, useState } from 'react';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 import { useRouter } from 'next/router';
-import { fetchBook } from 'service/books';
+import { fetchBook } from 'service/book/fetchBooks';
 import HeadInformation from 'components/HeadInformation';
 import AuthorizedPage from 'hoc/Authorized';
 import { SpinnerCircular } from 'spinners-react';
 import Image from 'next/image';
 import { AiOutlineBook } from 'react-icons/ai';
-import { Book } from 'service/types';
+import { Book } from 'service/book/types';
 import Button from 'components/Button';
 import {
 	auth,
