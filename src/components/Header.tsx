@@ -60,7 +60,7 @@ const Header = ({ authorized }: HeaderProps) => {
 				{authorized && (
 					<div
 						ref={wrapperRef}
-						className="items-center justify-between hidden lg:flex lg:w-auto lg:order-1 h-[46px]"
+						className="items-center justify-between hidden lg:flex lg:w-auto lg:order-1 h-[46px] lg:flex-col"
 					>
 						<SearchForm isOpen={isOpen} setIsOpen={setIsOpen} />
 					</div>

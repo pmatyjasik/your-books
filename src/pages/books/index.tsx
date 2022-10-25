@@ -12,6 +12,9 @@ import {
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { BookColumns, isValidColumn } from './types';
 import { BookStatus } from '../../firebase/types';
+import Link from 'next/link';
+import { AiOutlineBook } from 'react-icons/ai';
+import Image from 'next/image';
 
 const onDragEnd =
 	(
@@ -83,82 +86,99 @@ const Books: NextPage = () => {
 	return (
 		<>
 			<HeadInformation title={'Books'} content={'Books'} />
-			<div
-				style={{ display: 'flex', justifyContent: 'center', height: '100%' }}
-			>
-				<DragDropContext onDragEnd={onDragEnd(columns, setColumns)}>
-					{Object.entries(columns).map(([columnId, column]) => {
-						if (!isValidColumn(column)) {
-							return;
-						}
-						return (
-							<div
-								style={{
-									display: 'flex',
-									flexDirection: 'column',
-									alignItems: 'center',
-								}}
-								key={columnId}
-							>
-								<h2>{column.name}</h2>
-								<div style={{ margin: 8 }}>
-									<Droppable droppableId={columnId} key={columnId}>
-										{(provided, snapshot) => {
-											return (
-												<div
-													{...provided.droppableProps}
-													ref={provided.innerRef}
-													style={{
-														background: snapshot.isDraggingOver
-															? 'lightblue'
-															: 'lightgrey',
-														padding: 4,
-														width: 250,
-														minHeight: 500,
-													}}
-												>
-													{column.items.map((item, index) => {
-														return (
-															<Draggable
-																key={item.bookID}
-																draggableId={item.bookID}
-																index={index}
-															>
-																{(provided, snapshot) => {
-																	return (
-																		<div
-																			ref={provided.innerRef}
-																			{...provided.draggableProps}
-																			{...provided.dragHandleProps}
-																			style={{
-																				userSelect: 'none',
-																				padding: 16,
-																				margin: '0 0 8px 0',
-																				minHeight: '50px',
-																				backgroundColor: snapshot.isDragging
-																					? '#263B4A'
-																					: '#456C86',
-																				color: 'white',
-																				...provided.draggableProps.style,
-																			}}
-																		>
-																			{item.title}
-																		</div>
-																	);
-																}}
-															</Draggable>
-														);
-													})}
-													{provided.placeholder}
-												</div>
-											);
-										}}
-									</Droppable>
+			<div className="rounded-lg shadow-xl bg-secondary">
+				<ul className="text-xl font-bold text-center text-white divide-x sm:flex">
+					<li className="w-full">
+						<p className="inline-block w-full p-4 text-white rounded-t-lg bg-primary"></p>
+					</li>
+				</ul>
+				<div className="flex h-full overflow-x-auto lg:overflow-hidden lg:justify-center scrollbar-track-rounded-lg scrollbar-thumb-rounded-lg scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary">
+					<DragDropContext onDragEnd={onDragEnd(columns, setColumns)}>
+						{Object.entries(columns).map(([columnId, column]) => {
+							if (!isValidColumn(column)) {
+								return;
+							}
+							return (
+								<div
+									className="flex flex-col items-center flex-shrink-0 "
+									key={columnId}
+								>
+									<h2 className="mt-4 text-2xl text-white">{column.name}</h2>
+									<div className="m-4">
+										<Droppable droppableId={columnId} key={columnId}>
+											{(provided, snapshot) => {
+												return (
+													<div
+														className={`mb-4 border-2 border-primary rounded-lg p-2 w-[300px] min-h-[500px] ${
+															snapshot.isDraggingOver
+																? `opacity-80 bg-primary`
+																: `opacity-100`
+														}`}
+														{...provided.droppableProps}
+														ref={provided.innerRef}
+													>
+														{column.items.map((item, index) => {
+															return (
+																<Draggable
+																	key={item.bookID}
+																	draggableId={item.bookID}
+																	index={index}
+																>
+																	{(provided, snapshot) => {
+																		return (
+																			<div
+																				ref={provided.innerRef}
+																				{...provided.draggableProps}
+																				{...provided.dragHandleProps}
+																				title={item.title}
+																				className={`m-h-[50px] p-4 mb-2 text-white rounded-lg ${
+																					snapshot.isDragging
+																						? `bg-secondary`
+																						: `bg-primary`
+																				}`}
+																			>
+																				<Link href={`/book/${item.bookID}`}>
+																					<div className="flex flex-row cursor-pointer">
+																						<div className="flex items-center justify-center w-1/5">
+																							{item.image ? (
+																								<Image
+																									loader={() => item.image}
+																									unoptimized={true}
+																									src={item.image}
+																									width={40}
+																									height={50}
+																									blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gIoSUNDX1BST0ZJTEUAAQEAAAIYAAAAAAQwAABtbnRyUkdCIFhZWiAAAAAAAAAAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAAHRyWFlaAAABZAAAABRnWFlaAAABeAAAABRiWFlaAAABjAAAABRyVFJDAAABoAAAAChnVFJDAAABoAAAAChiVFJDAAABoAAAACh3dHB0AAAByAAAABRjcHJ0AAAB3AAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAFgAAAAcAHMAUgBHAEIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFhZWiAAAAAAAABvogAAOPUAAAOQWFlaIAAAAAAAAGKZAAC3hQAAGNpYWVogAAAAAAAAJKAAAA+EAAC2z3BhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABYWVogAAAAAAAA9tYAAQAAAADTLW1sdWMAAAAAAAAAAQAAAAxlblVTAAAAIAAAABwARwBvAG8AZwBsAGUAIABJAG4AYwAuACAAMgAwADEANv/bAEMAKBweIx4ZKCMhIy0rKDA8ZEE8Nzc8e1hdSWSRgJmWj4CMiqC05sOgqtqtiozI/8va7vX///+bwf////r/5v3/+P/bAEMBKy0tPDU8dkFBdviljKX4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+P/AABEIAhcDcgMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAAAAQMEAv/EABQQAQAAAAAAAAAAAAAAAAAAAAD/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQIDBP/EABYRAQEBAAAAAAAAAAAAAAAAAAARAf/aAAwDAQACEQMRAD8AwAe5yAAAAAAAAAAQBAAAAAABAAAEBFQUAAABAEAAEAAAQEVBQBARUAAQQAAAEARQAEAQAAQBAAARURQAAAABAAAAAAAAEAFAAAAAABUUABQAAAEAAFRVAAAAAAAAAAAAAAHUA9DIAAAAAAAAgAAIAAAAAIAAAAgIqCgAACCAAAAgCAACACgCCAAAIIAAioigAAIAAgIqAAIAAIAigAAAAIgogCoAKIAKgIoAACgAAAAACiKoAAACAAACiiKAAAAAAAAAAAADqAehkAAAABAVAAAQAAAAAAEAABABBQAAABFRAAABAAEAEAAFARAAARUQAAEVEUAARUAAQEVAAEAEFAEAAAAEAQAAAAAAABAAFEVQAAAAAAVBRRFAAAAEAFAABUAUQBQAAAAAAAdQg9DKoCAAAAAAAAAAAIAAAAAAiCoAoAACAAIAAIAAAgIAoAgIAAAIAgAAgCKAAgCACAAIAACAKAIAICoCAAAAAAAAAAAAIAKCoAoigAAAKAAKIAoAgAoAAAAAAAAAAAAAA6gHdkAAAAAAEAUQAAAAAAQAQAAUAAEAAEAABAAAQEAAAUBEAABFRAAAQAAEUQAAEBAAAQEAABFAQAAABAAAAAAABAUQBQBAAABQAAVAFEUABQAAAEFQBRBRRFAAAAAAAAAAB1CDuyAAAAAAAAAAAiCiAAAoAACAqAgAAAgKgAAICAAAKAiAAACAAICKgACKIqAAICAAAAgIAAAIigAAAAIgAAAAAAAAAAAAACKIKKIoAAAAACiiAKICKAAAoAAAAAAAAAAAA6hB2ZUQBRAFEAVAAAAAFAABAFQAAEAAAQAAABEFQAABQQQAAAQABAQAAABBFAAEVEAABAQAAARFAAAQFQEAAAEBRAFEAVABRAFEAUQEUAABQAAVAFEFFEAUAAAQAAAUFQBRAFEAUQBRAHUA7IAAAACAKIAogCoAACAAAIAqAAAACIKgAAAAgqoCACAqAAAgIAAACAigACAgAAIAACAgAAIogAAIAICoAAAACAIAogCiCiiAKIoAAgAoKgCiAKIAoiqAAAAgACiAKIKKIAogCiAKIA6gHZABAAAAABAUQBRAFQAAAAABBBUAAAAQFVAQAABAAAAQQAAAQFQEUBAVAQAQAAAEQVAABEVUAAEBUBABAUQAAQAQFEAUQBRAFEAUQUURQABABRRAFEAUQBQFAAAAFEAUQEUQBRAFEAUQB1AOyAAAAAAAICiAKIAoggAAAACAKICgCACAqAAAAIIAAAICoAACKCAACAIAAACCAAAIIoCAqAACIKgAAiCoAAAAgCiCKogCiCoogCiAKIKKAAAAqCiiAKIAogCgKgAAqAKIAogCiAKIAogDqAdWQAAAAAAQBRAFEAUQFAAAABBBRAAAAEBRBAAABAVAAAQBAUAAEEAAAEAAQAQAAUEEAEBUBABAVAQBAFQEUAAAQAAAAAAAAAFoAFABQAAAUFQEUQBRBRQAAAAAAFAAAAAAAAHUCOrKiAKIAogCiCCiAKIAAAAACAKIAqAAAgCAKIAAAAiCiAoAAIIAAAgCoAAIgqAAIIoAAIAAiCoAAggAIoAgAAAAAAAAAAAAAAAAAAAAAAALQAKAC0AAAFAAQVAFEAUQUUQBRAFEAdQg6sqIAogCiAKIAqAAAACIKIAogCiAAAAICiCCiAoAAIAqAgAgKIAAACCCoAAgAAiggACAqAgCCAAVQBAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFoAFAAoALQAKABQAKABR0AOzAAAAAAAAACAogCiAKIAoggAAAgqiAKIAAACCCiAAAAgCoCACAogACIqoAAICoCAIAAJVAEoAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANxB3ZUQBRAFEAUQBRAFEAUQAAAAAEAUQQUQAAAEAUQBUBABAUQAAAEEUAAEAAEAQAASqAJQAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbCDuyogCoAAAACAAAIAogCiAKIAogAAAIAoggogAAAICqIIAAAgCoCACAoggAJVACgAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0EHZlRAFEAUQBRAFEAUQBRBAAAEBVEAUQBRAAAAQQUQBUAAEQUQBRBKABVAEoAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPQDqgAAAAIAogCiAKIAogCiAKIIKgAAAAgKIAoggqAKAJQAKACUAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFAdEAAAAAAAAAQFEAUQBRBBUAAAUAAAQACgAlAAoAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADaAAAAAAAAoAAAAAgAAAAAIAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA2AAAAACAAAAAAAAAAgAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADYAAAAAAAAAIAAAAAAACAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACjoiCiCCgIKAgoCCgIKAgoCACgCAAAAgAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKKOiIKAgoCCgIKAgoCCgIKAgCAAAACCgIKIIKgoAkABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB7AdWQAAAAAEFEEFAQUBBQEFAQAAAURRBBQEFAQAABBBRBBUFAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgDqyAAAAAAAAAAgoCCgIKAgoggAAAIKAgoCAIAAqCgIKiAiiCCiCACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANQHZkAAAAAAAAAQQUBBQEFAQVAAAAAQUQQVAAAAAQUQQVBQBBBQEAQQUQQAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABsA7MAAAAAAAAIKAgoCCgIKgoAgAAIoCCgIAAAgIoCCoAAgIoCCoigAIKIIAgIoggqKoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACggoIgoCCiCKAAAAAAAAAAAAAAANRR6GUFEEFAQUBBQEFAQAAAAAAABFBUFEEAAABBQEFRAAAABBUQAAEURUFQBFEEAZAAAAVBRRBQEAAAAAAAAAAAAAAAAAAAAAABQQUBFBEAAAAAAAAAABQEFAQUBBQEFARQAAAAAABqA9DIAAAAAAAAAAAAAggoCCoAAAAAAKgoggAAACKAgCAAAiiCAAAIqCogIoggqIAAAAoAAAAigIKKIKAgoCCgIKAgoAAgAAAAACAAAAAAAoCKAAAAAAAAAAAAAAAAAAAAAAANgHoZAAAAQUBBQEFQAAAAAAABARQEFQAAAAUAQQVAAAAEEFQAABFEEARQAEFRAAZEFAQAAAUAAAAAAAAAAAAAAAAAAAEAAAUEUAAAAAAAAAAAAABQEFEEFAAAAAAAAAAAAAagPSyAAAAAAAAAAIoCCoAAAAAAgAAgqAAAAIoACAAAAAIIAAAgIoCAIoAggCaACAigIAKAAAAAAAAAAAAAAAAAAAAKAgAAAAAAAAAAAAoAAIAAAAAAAAAAAAAAAAAANQHpZAAAAAAAAAAAAAAQVAAAAEAAAAEFQAAUAQEUBAAAEBFQABAABAEUAQQVEABAABBUFAAAAAAAAAAAAAAAAAAFAQAAAAAAAAAAAAUAAEAAAAAAAAAAAAAAAAAAAAGoD0sgAAAAAAAAAAAAACAAAAAAAgAAIAAAoAgAAgAACAgAAIAACAigCAgIACAAAgCgAAAAAAAAAAAAAAACgAAIAAAAAAAAAAAAoCAAAAAAAAAAAAAAAAAAAAAAD/2Q=="
+																									placeholder="blur"
+																									alt="Thumnbail"
+																								/>
+																							) : (
+																								<AiOutlineBook className="text-4xl text-white w-[40px] h-[50px] opacity-50" />
+																							)}
+																						</div>
+																						<div className="flex flex-col w-4/5 ml-2">
+																							<p className="pr-2 text-sm font-bold text-white">
+																								{item.title}
+																							</p>
+																						</div>
+																					</div>
+																				</Link>
+																			</div>
+																		);
+																	}}
+																</Draggable>
+															);
+														})}
+														{provided.placeholder}
+													</div>
+												);
+											}}
+										</Droppable>
+									</div>
 								</div>
-							</div>
-						);
-					})}
-				</DragDropContext>
+							);
+						})}
+					</DragDropContext>
+				</div>
 			</div>
 		</>
 	);
