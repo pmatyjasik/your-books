@@ -14,13 +14,13 @@ import {
 	auth,
 	addBookToCollection,
 	deleteBookFromCollection,
-	db,
+	isBookAdded,
 } from '../../firebase/firebase';
-import { getDoc, doc } from 'firebase/firestore';
+import { BookStatus } from '../../firebase/types';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 const Book: NextPage = () => {
-	const [booknInCollection, setBooknInCollection] = useState<boolean>();
+	const [booknInCollection, setBooknInCollection] = useState<boolean>(false);
 	const router = useRouter();
 	const [user] = useAuthState(auth);
 	const bookID = typeof router.query?.id === 'string' ? router.query.id : '';
@@ -33,26 +33,20 @@ const Book: NextPage = () => {
 	);
 
 	useEffect(() => {
-		const isBookAdded = async (bookID: string, userUID: string) => {
-			try {
-				const res = await getDoc(doc(db, 'Users', userUID, 'Books', bookID));
-				setBooknInCollection(res.exists());
-			} catch (error) {
-				console.error(error);
-			}
-		};
-		if (user) isBookAdded(bookID, user?.uid);
+		if (user) {
+			isBookAdded(bookID, user?.uid).then(setBooknInCollection);
+		}
 	}, [bookID, user, booknInCollection]);
 
 	const onAdd = () => {
 		if (user) {
-			addBookToCollection(
+			addBookToCollection({
 				bookID,
-				user?.uid,
-				'To read',
 				title,
-				imageLinks?.thumbnail ? imageLinks?.thumbnail : ''
-			);
+				userUID: user?.uid,
+				status: BookStatus.ToRead,
+				image: imageLinks?.thumbnail ? imageLinks?.thumbnail : '',
+			});
 			setBooknInCollection((prev) => !prev);
 		}
 	};
