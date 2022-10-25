@@ -22,10 +22,10 @@ const Header = ({ authorized }: HeaderProps) => {
 	const toggleOpen = () => setIsOpen((p) => !p);
 
 	return (
-		<nav className="px-4 py-6 sm:px-4 bg-secondary">
+		<nav className="px-4 py-6 bg-secondary">
 			<div className="container flex flex-wrap items-center justify-between mx-auto sm:flex">
 				<Link href="/" passHref className="flex items-center">
-					<a className="flex self-center justify-center text-xl font-semibold text-white sm:block sm:text-4xl whitespace-nowrap">
+					<a className="flex self-center justify-center text-2xl font-semibold text-white sm:block sm:text-4xl whitespace-nowrap">
 						YourBooks
 					</a>
 				</Link>
@@ -60,7 +60,7 @@ const Header = ({ authorized }: HeaderProps) => {
 				{authorized && (
 					<div
 						ref={wrapperRef}
-						className="items-center justify-between hidden lg:flex lg:w-auto lg:order-1 h-[46px] lg:flex-col"
+						className="items-center justify-between hidden lg:flex lg:w-auto lg:order-1 h-[46px]"
 					>
 						<SearchForm isOpen={isOpen} setIsOpen={setIsOpen} />
 					</div>

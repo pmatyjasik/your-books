@@ -23,9 +23,9 @@ const AvatarMenu = () => {
 				<div className="relative inline-flex items-center justify-center p-4 overflow-hidden bg-gray-600 rounded-lg">
 					<p className="flex items-center text-lg font-medium text-white">
 						{isOpen ? (
-							<BsFillArrowUpCircleFill className="w-6 h-6" />
+							<BsFillArrowUpCircleFill className="w-5 h-5" />
 						) : (
-							<BsFillArrowDownCircleFill className="w-6 h-6" />
+							<BsFillArrowDownCircleFill className="w-5 h-5" />
 						)}
 					</p>
 				</div>

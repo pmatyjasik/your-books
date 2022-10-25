@@ -119,15 +119,15 @@ const addBookToCollection = async ({
 			date: new Date(),
 		});
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 	}
 };
 
 const deleteBookFromCollection = async (bookID: string, userUID: string) => {
 	try {
 		await deleteDoc(doc(db, 'Users', userUID, 'Books', bookID));
-	} catch (error) {
-		console.error(error);
+	} catch (err) {
+		console.error(err);
 	}
 };
 
@@ -138,8 +138,8 @@ const updateBookInCollection = async (bookId: string, status: BookStatus) => {
 	}
 	try {
 		await updateDoc(doc(db, 'Users', userUID, 'Books', bookId), { status });
-	} catch (error) {
-		console.error(error);
+	} catch (err) {
+		console.error(err);
 	}
 };
 
@@ -165,7 +165,7 @@ const getBooksFromCollection = async (userUID: string) => {
 		});
 		return columnsObject;
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 	}
 };
 
@@ -173,8 +173,8 @@ const isBookAdded = async (bookID: string, userUID: string) => {
 	try {
 		const res = await getDoc(doc(db, 'Users', userUID, 'Books', bookID));
 		return res.exists();
-	} catch (error) {
-		console.error(error);
+	} catch (err) {
+		console.error(err);
 		return false;
 	}
 };
