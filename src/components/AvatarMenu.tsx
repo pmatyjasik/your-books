@@ -42,8 +42,8 @@ const AvatarMenu = () => {
 						<AvatarMenuItemu onClick={() => router.push('/notes')}>
 							Notes
 						</AvatarMenuItemu>
-						<AvatarMenuItemu onClick={() => router.push('/settings')}>
-							Settings
+						<AvatarMenuItemu onClick={() => router.push('/account')}>
+							Account
 						</AvatarMenuItemu>
 						<AvatarMenuItemu logout={true} onClick={handleLougout}>
 							Logout

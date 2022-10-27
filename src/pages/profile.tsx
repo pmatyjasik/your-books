@@ -34,12 +34,11 @@ const Profil: NextPage = () => {
 				</div>
 				<div className="items-center block md:flex">
 					<div className="grid gap-2 py-2 rounded-lg md:w-1/2 md:grid-cols-1">
-						<GridItem cardTitle="News" onClick={() => router.push('/news')} />
 						<GridItem cardTitle="Books" onClick={() => router.push('/books')} />
 						<GridItem cardTitle="Notes" onClick={() => router.push('/notes')} />
 						<GridItem
-							cardTitle="Settings"
-							onClick={() => router.push('/settings')}
+							cardTitle="Account"
+							onClick={() => router.push('/account')}
 						/>
 						<GridItem
 							cardTitle="Logout"
@@ -51,7 +50,7 @@ const Profil: NextPage = () => {
 						<Lottie
 							animationData={profile}
 							loop={true}
-							className="md:h-80 lg:h-[35rem]"
+							className="md:h-[30rem]"
 						/>
 					</div>
 				</div>
