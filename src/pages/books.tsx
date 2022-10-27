@@ -109,7 +109,7 @@ const Books: NextPage = () => {
 											{(provided, snapshot) => {
 												return (
 													<div
-														className={`mb-4 border-2 border-primary rounded-lg p-2 w-[300px] min-h-[500px] ${
+														className={`mb-4 border-2 border-primary rounded-lg p-4 w-[300px] h-[500px] overflow-y-auto crollbar-track-rounded-lg scrollbar-thumb-rounded-lg scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary${
 															snapshot.isDraggingOver
 																? `opacity-80 bg-primary`
 																: `opacity-100`
