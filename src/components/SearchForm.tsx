@@ -64,7 +64,7 @@ const SearchForm = ({ mobile, isOpen, setIsOpen }: SearchFormProps) => {
 			{isOpen && (
 				<>
 					<div
-						className={`scrollbar-track-rounded-lg scrollbar-thumb-rounded-lg bg-gray-700 rounded-lg max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary${
+						className={`lg:absolute scrollbar-track-rounded-lg scrollbar-thumb-rounded-lg bg-gray-700 rounded-lg max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-secondary${
 							!mobile && 'sm:w-[25rem] lg:w-[30rem]'
 						}`}
 					>
