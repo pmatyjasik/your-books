@@ -179,6 +179,15 @@ const isBookAdded = async (bookID: string, userUID: string) => {
 	}
 };
 
+const getUserData = async (userUID: string) => {
+	try {
+		const docs = await getDoc(doc(db, 'Users', userUID));
+		return docs;
+	} catch (err) {
+		console.error(err);
+	}
+};
+
 export {
 	auth,
 	db,
@@ -192,4 +201,5 @@ export {
 	deleteBookFromCollection,
 	updateBookInCollection,
 	isBookAdded,
+	getUserData,
 };
