@@ -1,25 +1,31 @@
 import type { NextPage } from 'next';
 import HeadInformation from 'components/HeadInformation';
 import AuthorizedPage from 'hoc/Authorized';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, getUserData } from '../firebase/firebase';
+import { getUserData } from '../firebase/firebase';
 import { useEffect, useState } from 'react';
 import Lottie from 'lottie-react';
 import account from 'assets/account.json';
+import { userDataInterface } from '../firebase/types';
 
 const Account: NextPage = () => {
-	const [userUID, setUserUID] = useState<string>('');
-	const [userProvider, setUserProvider] = useState<string>('');
-	const [user] = useAuthState(auth);
+	const [userData, setUserData] = useState<userDataInterface>({
+		email: '',
+		authProvider: '',
+		displayName: '',
+		uid: '',
+	});
 
 	useEffect(() => {
-		if (user)
-			getUserData(user?.uid).then((userData) => {
-				if (userData) {
-					setUserUID(userData.data()?.uid);
-					setUserProvider(userData.data()?.authProvider);
-				}
-			});
+		getUserData().then((userData) => {
+			if (userData) {
+				setUserData({
+					email: userData.data()?.email,
+					authProvider: userData.data()?.authProvider,
+					displayName: userData.data()?.displayName,
+					uid: userData.data()?.uid,
+				});
+			}
+		});
 	});
 
 	return (
@@ -39,7 +45,7 @@ const Account: NextPage = () => {
 									Display Name
 								</h2>
 								<p className="mb-2 text-lg font-semibold md:text-xl">
-									{user?.displayName ? user?.displayName : '-'}
+									{userData.displayName}
 								</p>
 							</div>
 							<div className="flex flex-col px-8 pb-3 md:px-0">
@@ -47,7 +53,7 @@ const Account: NextPage = () => {
 									Address e-mail
 								</h2>
 								<p className="mb-2 text-lg font-semibold md:text-xl">
-									{user?.email}
+									{userData.email}
 								</p>
 							</div>
 							<div className="flex flex-col px-8 pb-3 md:px-0">
@@ -55,7 +61,7 @@ const Account: NextPage = () => {
 									Provider
 								</h2>
 								<p className="mb-2 text-lg font-semibold md:text-xl">
-									{userProvider}
+									{userData.authProvider}
 								</p>
 							</div>
 							<div className="flex flex-col px-8 pb-3 md:px-0">
@@ -63,7 +69,7 @@ const Account: NextPage = () => {
 									UID
 								</h2>
 								<p className="mb-2 text-lg font-semibold md:text-xl">
-									{userUID}
+									{userData.uid}
 								</p>
 							</div>
 						</div>

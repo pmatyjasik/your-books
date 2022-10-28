@@ -11,3 +11,10 @@ export enum BookStatus {
 	Reading = 'reading',
 	Read = 'read',
 }
+
+export interface userDataInterface {
+	email: string;
+	authProvider: string;
+	displayName: string;
+	uid: string;
+}

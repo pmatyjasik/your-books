@@ -6,8 +6,20 @@ import Lottie from 'lottie-react';
 import profile from 'assets/profile.json';
 import HeadInformation from 'components/HeadInformation';
 import AuthorizedPage from 'hoc/Authorized';
-import { handleLougout } from '../firebase/firebase';
+import { getUserData, handleLougout } from '../firebase/firebase';
+import { useState, useEffect } from 'react';
+import Loader from 'components/Loader';
+
 const Profil: NextPage = () => {
+	const [userDisplayName, setUserDisplayName] = useState<string>('');
+
+	useEffect(() => {
+		getUserData().then((userData) => {
+			if (userData) {
+				setUserDisplayName(userData.data()?.displayName);
+			}
+		});
+	});
 	return (
 		<>
 			<HeadInformation title={'Profile'} content={'Profile'} />
@@ -15,7 +27,9 @@ const Profil: NextPage = () => {
 				<div className="w-full border rounded-t-lg shadow-md bg-secondary">
 					<ul className="text-xl font-bold text-center text-white divide-x sm:flex">
 						<li className="w-full">
-							<p className="inline-block w-full p-4 text-white rounded-t-lg bg-primary"></p>
+							<p className="inline-block w-full p-4 text-white rounded-t-lg bg-primary">
+								{userDisplayName ? userDisplayName : <Loader />}
+							</p>
 						</li>
 					</ul>
 					<div className="w-full text-center">

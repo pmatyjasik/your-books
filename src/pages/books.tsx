@@ -69,7 +69,6 @@ const onDragEnd =
 	};
 
 const Books: NextPage = () => {
-	const [user] = useAuthState(auth);
 	const [columns, setColumns] = useState<BookColumns>({
 		Read: {},
 		Reading: {},
@@ -77,11 +76,10 @@ const Books: NextPage = () => {
 	});
 
 	useEffect(() => {
-		if (user)
-			getBooksFromCollection(user?.uid).then((columns) => {
-				if (columns) setColumns(columns);
-			});
-	}, [user]);
+		getBooksFromCollection().then((columns) => {
+			if (columns) setColumns(columns);
+		});
+	}, []);
 
 	return (
 		<>

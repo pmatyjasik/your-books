@@ -22,7 +22,7 @@ import {
 } from 'firebase/firestore';
 import { emptyBookColumns } from 'service/Books/utils';
 import type { BookColumns } from 'service/Books/types';
-import { Book, BookStatus } from '../firebase/types';
+import { Book, BookStatus, userDataInterface } from '../firebase/types';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyDpp2AAU8HxZVZiLoDJBCTq9tomYWm4LCE',
@@ -46,9 +46,10 @@ const signInWithGoogle = async () => {
 		const user = res.user;
 		const docs = await getDoc(doc(db, 'Users', user.uid));
 		if (!docs.exists()) {
-			await setDoc(doc(db, 'Users', user.uid), {
+			await setDoc(doc(db, 'Users', user.uid), <userDataInterface>{
+				displayName: user.displayName,
 				uid: user.uid,
-				authProvider: 'google',
+				authProvider: 'Google',
 				email: user.email,
 			});
 		}
@@ -63,9 +64,10 @@ const signInWithFacebook = async () => {
 		const user = res.user;
 		const docs = await getDoc(doc(db, 'Users', user.uid));
 		if (!docs.exists()) {
-			await setDoc(doc(db, 'Users', user.uid), {
+			await setDoc(doc(db, 'Users', user.uid), <userDataInterface>{
+				displayName: user.displayName,
 				uid: user.uid,
-				authProvider: 'facebook',
+				authProvider: 'Facebook',
 				email: user.email,
 			});
 		}
@@ -82,13 +84,19 @@ const signInWithCredentials = async (email: string, password: string) => {
 	}
 };
 
-const signUpWithCredentials = async (email: string, password: string) => {
+const signUpWithCredentials = async (
+	email: string,
+	password: string,
+	firstName: string,
+	lastName: string
+) => {
 	try {
 		const res = await createUserWithEmailAndPassword(auth, email, password);
 		const user = res.user;
 		const docs = await getDoc(doc(db, 'Users', user.uid));
 		if (!docs.exists()) {
-			await setDoc(doc(db, 'Users', user.uid), {
+			await setDoc(doc(db, 'Users', user.uid), <userDataInterface>{
+				displayName: `${firstName} ${lastName}`,
 				uid: user.uid,
 				authProvider: 'emailAndPassword',
 				email: user.email,
@@ -147,7 +155,11 @@ const objectKeys = <Obj extends {}>(obj: Obj): (keyof Obj)[] => {
 	return Object.keys(obj) as (keyof Obj)[];
 };
 
-const getBooksFromCollection = async (userUID: string) => {
+const getBooksFromCollection = async () => {
+	const userUID = auth.currentUser?.uid;
+	if (!userUID) {
+		return;
+	}
 	try {
 		const anserwsCollectionRef = collection(db, 'Users', userUID, 'Books');
 		const anserwsQuery = query(anserwsCollectionRef, orderBy('date', 'desc'));
@@ -179,7 +191,11 @@ const isBookAdded = async (bookID: string, userUID: string) => {
 	}
 };
 
-const getUserData = async (userUID: string) => {
+const getUserData = async () => {
+	const userUID = auth.currentUser?.uid;
+	if (!userUID) {
+		return;
+	}
 	try {
 		const docs = await getDoc(doc(db, 'Users', userUID));
 		return docs;

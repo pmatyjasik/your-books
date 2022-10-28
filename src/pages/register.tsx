@@ -16,6 +16,8 @@ import HeadInformation from 'components/HeadInformation';
 import UnAuthorizedPage from 'hoc/UnAuthorized';
 
 const initialValues = {
+	firstName: '',
+	lastName: '',
 	email: '',
 	password: '',
 	repeatPassword: '',
@@ -25,6 +27,8 @@ const initialValues = {
 type FormValues = typeof initialValues;
 
 const RegisterSchema = Yup.object().shape({
+	firstName: Yup.string().required('Required field'),
+	lastName: Yup.string().required('Required field'),
 	email: Yup.string()
 		.email('Incorrect email addressl')
 		.required('Required field'),
@@ -45,7 +49,12 @@ const Register: NextPage = () => {
 		{ resetForm, setFieldError }: FormikHelpers<FormValues>
 	) => {
 		try {
-			await signUpWithCredentials(values.email, values.password);
+			await signUpWithCredentials(
+				values.email,
+				values.password,
+				values.firstName,
+				values.lastName
+			);
 			resetForm();
 		} catch (e) {
 			setFieldError('message', 'Coś poszło nie tak');
@@ -71,6 +80,22 @@ const Register: NextPage = () => {
 					>
 						{({ values, errors, handleChange, handleSubmit, touched }) => (
 							<Form className="flex flex-col w-64 sm:w-80">
+								<Input
+									type="text"
+									value={values.firstName}
+									error={touched.firstName ? errors.firstName : ''}
+									required
+									placeholder="Name"
+									onChange={handleChange('firstName')}
+								/>
+								<Input
+									type="text"
+									value={values.lastName}
+									error={touched.lastName ? errors.lastName : ''}
+									required
+									placeholder="Last name"
+									onChange={handleChange('lastName')}
+								/>
 								<Input
 									type="email"
 									value={values.email}
