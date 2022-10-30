@@ -39,9 +39,6 @@ const AvatarMenu = () => {
 						<AvatarMenuItemu onClick={() => router.push('/books')}>
 							Books
 						</AvatarMenuItemu>
-						<AvatarMenuItemu onClick={() => router.push('/notes')}>
-							Notes
-						</AvatarMenuItemu>
 						<AvatarMenuItemu onClick={() => router.push('/account')}>
 							Account
 						</AvatarMenuItemu>
