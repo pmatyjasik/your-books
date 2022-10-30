@@ -1,5 +1,5 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 import { useRouter } from 'next/router';
 import { fetchBook } from 'service/book/fetchBooks';
@@ -194,19 +194,30 @@ const Book: NextPage = () => {
 													{openNotes ? 'Hide note' : 'Show note'}
 												</Button>
 											</div>
-											<div className="flex p-4 justify-evenly">
-												<Button
-													outline={reccomendation ? false : true}
+											<div className="flex justify-center p-4">
+												<AiFillLike
+													className={`${
+														reccomendation ? 'text-primary' : 'text-white'
+													} w-8 h-8 mr-4`}
+													onDoubleClick={() =>
+														toast.success(
+															'Positive reccomendation has beed saved!'
+														)
+													}
 													onClick={() => handleReccomendation(true)}
-												>
-													<AiFillLike />
-												</Button>
-												<Button
-													outline={reccomendation ? true : false}
+												/>
+
+												<AiFillDislike
+													className={`${
+														!reccomendation ? 'text-primary' : 'text-white'
+													} w-8 h-8 ml-4`}
+													onDoubleClick={() =>
+														toast.success(
+															'Negative reccomendation has beed saved!'
+														)
+													}
 													onClick={() => handleReccomendation(false)}
-												>
-													<AiFillDislike />
-												</Button>
+												/>
 											</div>
 										</>
 									)}
