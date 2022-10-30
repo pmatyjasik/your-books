@@ -6,12 +6,22 @@ import Lottie from 'lottie-react';
 import profile from 'assets/profile.json';
 import HeadInformation from 'components/HeadInformation';
 import AuthorizedPage from 'hoc/Authorized';
-import { getUserData, handleLougout } from '../firebase/firebase';
+import {
+	getBooksFromCollection,
+	getUserData,
+	handleLougout,
+} from '../firebase/firebase';
 import { useState, useEffect } from 'react';
 import Loader from 'components/Loader';
+import { BookColumns } from 'service/Books/types';
 
 const Profil: NextPage = () => {
 	const [userDisplayName, setUserDisplayName] = useState<string>('');
+	const [columns, setColumns] = useState<BookColumns>({
+		Read: {},
+		Reading: {},
+		ToRead: {},
+	});
 
 	useEffect(() => {
 		getUserData().then((userData) => {
@@ -20,6 +30,10 @@ const Profil: NextPage = () => {
 			}
 		});
 	});
+	getBooksFromCollection().then((columns) => {
+		if (columns) setColumns(columns);
+	});
+
 	return (
 		<>
 			<HeadInformation title={'Profile'} content={'Profile'} />
@@ -27,9 +41,9 @@ const Profil: NextPage = () => {
 				<div className="w-full border rounded-t-lg shadow-md bg-secondary">
 					<ul className="text-xl font-bold text-center text-white divide-x sm:flex">
 						<li className="w-full">
-							<p className="inline-block w-full p-4 text-white rounded-t-lg bg-primary">
+							<div className="inline-block w-full p-4 text-white rounded-t-lg bg-primary">
 								{userDisplayName ? userDisplayName : <Loader />}
-							</p>
+							</div>
 						</li>
 					</ul>
 					<div className="w-full text-center">
@@ -38,11 +52,20 @@ const Profil: NextPage = () => {
 						</p>
 					</div>
 					<div className="border-t border-secondary">
-						<dl className="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-white sm:grid-cols-2 xl:grid-cols-4 sm:p-8">
-							<StatsItem title={'10'} subtitle={'To read'} />
-							<StatsItem title={'3'} subtitle={'Reading'} />
-							<StatsItem title={'7'} subtitle={'Read'} />
-							<StatsItem title={'0'} subtitle={'Notes'} />
+						<dl className="grid max-w-screen-xl grid-cols-1 gap-8 p-4 mx-auto text-white sm:grid-cols-3 xl:grid-cols-3 sm:p-8">
+							<StatsItem
+								title={columns.ToRead.items ? columns.ToRead.items.length : 0}
+								subtitle={'To read'}
+							/>
+							<StatsItem
+								title={columns.Reading.items ? columns.Reading.items.length : 0}
+								subtitle={'Reading'}
+							/>
+							<StatsItem
+								title={columns.Read.items ? columns.Read.items.length : 0}
+								subtitle={'Read'}
+							/>
+							{/* <StatsItem title={0} subtitle={'Notes'} /> */}
 						</dl>
 					</div>
 				</div>
