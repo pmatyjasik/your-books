@@ -17,17 +17,19 @@ import {
 	isBookAdded,
 	getBookFromCollection,
 	updateBookNoteInCollection,
+	updateBookReccomendationInCollection,
 } from '../../firebase/firebase';
 import { BookStatus } from '../../firebase/types';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AiFillLike, AiFillDislike } from 'react-icons/ai';
 
 const Book: NextPage = () => {
 	const [booknInCollection, setBooknInCollection] = useState<boolean>(false);
 	const [openNotes, setOpenNotes] = useState<boolean>(false);
 	const [noteContent, setNoteContent] = useState<string | undefined>();
-	const [reccomendation, setReccomendation] = useState(false);
+	const [reccomendation, setReccomendation] = useState<boolean>(false);
 	const [bookStatus, setBookStatus] = useState<string>(BookStatus.ToRead);
 	const router = useRouter();
 	const [user] = useAuthState(auth);
@@ -89,6 +91,11 @@ const Book: NextPage = () => {
 	const handleOnSave = () => {
 		updateBookNoteInCollection(bookID, noteContent);
 		toast.success('Note has been saved!');
+	};
+
+	const handleReccomendation = (isReccomended: boolean) => {
+		isReccomended ? setReccomendation(true) : setReccomendation(false);
+		updateBookReccomendationInCollection(bookID, reccomendation);
 	};
 
 	const {
@@ -178,14 +185,30 @@ const Book: NextPage = () => {
 										)}
 									</div>
 									{bookStatus === BookStatus.Read && (
-										<div className="flex justify-center">
-											<Button
-												outline
-												onClick={() => setOpenNotes((prev) => !prev)}
-											>
-												{openNotes ? 'Hide note' : 'Show note'}
-											</Button>
-										</div>
+										<>
+											<div className="flex justify-center">
+												<Button
+													outline
+													onClick={() => setOpenNotes((prev) => !prev)}
+												>
+													{openNotes ? 'Hide note' : 'Show note'}
+												</Button>
+											</div>
+											<div className="flex p-4 justify-evenly">
+												<Button
+													outline={reccomendation ? false : true}
+													onClick={() => handleReccomendation(true)}
+												>
+													<AiFillLike />
+												</Button>
+												<Button
+													outline={reccomendation ? true : false}
+													onClick={() => handleReccomendation(false)}
+												>
+													<AiFillDislike />
+												</Button>
+											</div>
+										</>
 									)}
 									{bookStatus === BookStatus.Reading && (
 										<div className="flex justify-center">

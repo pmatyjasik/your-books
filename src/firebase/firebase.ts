@@ -160,7 +160,7 @@ const updateBookStatusInCollection = async (
 
 const updateBookReccomendationInCollection = async (
 	bookId: string,
-	reccomendation: boolean | undefined
+	reccomendation: boolean
 ) => {
 	const userUID = auth.currentUser?.uid;
 	if (!userUID) {
