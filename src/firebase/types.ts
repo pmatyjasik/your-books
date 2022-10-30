@@ -4,6 +4,8 @@ export interface Book {
 	status: BookStatus;
 	title: string;
 	image: string;
+	reccomendation: boolean;
+	note: string;
 }
 
 export enum BookStatus {

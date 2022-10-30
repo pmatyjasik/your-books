@@ -5,11 +5,9 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DropResult } from 'react-beautiful-dnd';
 import { useEffect, useState } from 'react';
 import {
-	auth,
 	getBooksFromCollection,
-	updateBookInCollection,
+	updateBookStatusInCollection,
 } from '../firebase/firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { BookColumns, isValidColumn } from 'service/Books/types';
 import { BookStatus } from '../firebase/types';
 import Link from 'next/link';
@@ -46,7 +44,7 @@ const onDragEnd =
 					items: destItems,
 				},
 			});
-			updateBookInCollection(
+			updateBookStatusInCollection(
 				draggableId,
 				BookStatus[destination.droppableId as keyof typeof BookStatus]
 			);

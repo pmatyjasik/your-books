@@ -117,6 +117,8 @@ const addBookToCollection = async ({
 	status,
 	title,
 	userUID,
+	reccomendation,
+	note,
 }: Book) => {
 	try {
 		await setDoc(doc(db, 'Users', userUID, 'Books', bookID), {
@@ -124,6 +126,8 @@ const addBookToCollection = async ({
 			title: title,
 			image: image,
 			status: status,
+			reccomendation: reccomendation,
+			note: note,
 			date: new Date(),
 		});
 	} catch (err) {
@@ -139,13 +143,48 @@ const deleteBookFromCollection = async (bookID: string, userUID: string) => {
 	}
 };
 
-const updateBookInCollection = async (bookId: string, status: BookStatus) => {
+const updateBookStatusInCollection = async (
+	bookId: string,
+	status: BookStatus
+) => {
 	const userUID = auth.currentUser?.uid;
 	if (!userUID) {
 		return;
 	}
 	try {
 		await updateDoc(doc(db, 'Users', userUID, 'Books', bookId), { status });
+	} catch (err) {
+		console.error(err);
+	}
+};
+
+const updateBookReccomendationInCollection = async (
+	bookId: string,
+	reccomendation: boolean | undefined
+) => {
+	const userUID = auth.currentUser?.uid;
+	if (!userUID) {
+		return;
+	}
+	try {
+		await updateDoc(doc(db, 'Users', userUID, 'Books', bookId), {
+			reccomendation,
+		});
+	} catch (err) {
+		console.error(err);
+	}
+};
+
+const updateBookNoteInCollection = async (
+	bookId: string,
+	note: string | undefined
+) => {
+	const userUID = auth.currentUser?.uid;
+	if (!userUID) {
+		return;
+	}
+	try {
+		await updateDoc(doc(db, 'Users', userUID, 'Books', bookId), { note });
 	} catch (err) {
 		console.error(err);
 	}
@@ -176,6 +215,19 @@ const getBooksFromCollection = async () => {
 			};
 		});
 		return columnsObject;
+	} catch (err) {
+		console.error(err);
+	}
+};
+
+const getBookFromCollection = async (bookID: string) => {
+	const userUID = auth.currentUser?.uid;
+	if (!userUID) {
+		return;
+	}
+	try {
+		const docs = await getDoc(doc(db, 'Users', userUID, 'Books', bookID));
+		return docs.data();
 	} catch (err) {
 		console.error(err);
 	}
@@ -215,7 +267,10 @@ export {
 	handleLougout,
 	addBookToCollection,
 	deleteBookFromCollection,
-	updateBookInCollection,
+	updateBookStatusInCollection,
 	isBookAdded,
 	getUserData,
+	getBookFromCollection,
+	updateBookNoteInCollection,
+	updateBookReccomendationInCollection,
 };
