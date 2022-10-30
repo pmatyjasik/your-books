@@ -65,7 +65,6 @@ const Profil: NextPage = () => {
 								title={columns.Read.items ? columns.Read.items.length : 0}
 								subtitle={'Read'}
 							/>
-							{/* <StatsItem title={0} subtitle={'Notes'} /> */}
 						</dl>
 					</div>
 				</div>
