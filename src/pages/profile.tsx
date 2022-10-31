@@ -54,14 +54,20 @@ const Profil: NextPage = () => {
 					<div className="border-t border-secondary">
 						<dl className="grid max-w-screen-xl grid-cols-1 gap-8 p-4 mx-auto text-white sm:grid-cols-3 xl:grid-cols-3 sm:p-8">
 							<StatsItem
+								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+								// @ts-expect-error
 								title={columns.ToRead.items ? columns.ToRead.items.length : 0}
 								subtitle={'To read'}
 							/>
 							<StatsItem
+								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+								// @ts-expect-error
 								title={columns.Reading.items ? columns.Reading.items.length : 0}
 								subtitle={'Reading'}
 							/>
 							<StatsItem
+								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+								// @ts-expect-error
 								title={columns.Read.items ? columns.Read.items.length : 0}
 								subtitle={'Read'}
 							/>
