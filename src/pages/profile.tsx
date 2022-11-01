@@ -84,7 +84,6 @@ const Profil: NextPage = () => {
 				<div className="items-center block md:flex">
 					<div className="grid gap-2 py-2 rounded-lg md:w-1/2 md:grid-cols-1">
 						<GridItem cardTitle="Books" onClick={() => router.push('/books')} />
-						<GridItem cardTitle="Notes" onClick={() => router.push('/notes')} />
 						<GridItem
 							cardTitle="Account"
 							onClick={() => router.push('/account')}
