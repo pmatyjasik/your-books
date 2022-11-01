@@ -13,6 +13,7 @@ import { BookStatus } from '../firebase/types';
 import Link from 'next/link';
 import { AiOutlineBook } from 'react-icons/ai';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const onDragEnd =
 	(
@@ -82,7 +83,13 @@ const Books: NextPage = () => {
 	return (
 		<>
 			<HeadInformation title={'Books'} content={'Books'} />
-			<div className="rounded-lg shadow-xl bg-secondary">
+			<motion.div
+				className="rounded-lg shadow-xl bg-secondary"
+				initial={{ opacity: 0.8, scale: 0.9 }}
+				whileInView={{ opacity: 1, scale: 1 }}
+				viewport={{ once: true }}
+				transition={{ duration: 0.5 }}
+			>
 				<ul className="text-xl font-bold text-center text-white divide-x sm:flex">
 					<li className="w-full">
 						<p className="inline-block w-full p-4 text-white rounded-t-lg bg-primary"></p>
@@ -175,7 +182,7 @@ const Books: NextPage = () => {
 						})}
 					</DragDropContext>
 				</div>
-			</div>
+			</motion.div>
 		</>
 	);
 };

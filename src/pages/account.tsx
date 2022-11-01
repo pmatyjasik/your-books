@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import Lottie from 'lottie-react';
 import account from 'assets/account.json';
 import { userDataInterface } from '../firebase/types';
+import { motion } from 'framer-motion';
 
 const Account: NextPage = () => {
 	const [userData, setUserData] = useState<userDataInterface>({
@@ -31,7 +32,13 @@ const Account: NextPage = () => {
 	return (
 		<>
 			<HeadInformation title={'Settings'} content={'Settings'} />
-			<div className="rounded-lg shadow-xl bg-secondary">
+			<motion.div
+				className="rounded-lg shadow-xl bg-secondary"
+				initial={{ opacity: 0.8, scale: 0.9 }}
+				whileInView={{ opacity: 1, scale: 1 }}
+				viewport={{ once: true }}
+				transition={{ duration: 0.5 }}
+			>
 				<div className="w-full border rounded-lg rounded-t-lg shadow-md bg-secondary">
 					<ul className="text-xl font-bold text-center text-white divide-x sm:flex">
 						<li className="w-full">
@@ -82,7 +89,7 @@ const Account: NextPage = () => {
 						</div>
 					</div>
 				</div>
-			</div>
+			</motion.div>
 		</>
 	);
 };

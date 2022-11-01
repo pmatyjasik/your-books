@@ -14,6 +14,7 @@ import {
 import { useState, useEffect } from 'react';
 import Loader from 'components/Loader';
 import { BookColumns } from 'service/Books/types';
+import { motion } from 'framer-motion';
 
 const Profil: NextPage = () => {
 	const [userDisplayName, setUserDisplayName] = useState<string>('');
@@ -37,12 +38,18 @@ const Profil: NextPage = () => {
 	return (
 		<>
 			<HeadInformation title={'Profile'} content={'Profile'} />
-			<div className="rounded-lg shadow-xl bg-secondary">
+			<motion.div
+				className="rounded-lg shadow-xl bg-secondary"
+				initial={{ opacity: 0.8, scale: 0.9 }}
+				whileInView={{ opacity: 1, scale: 1 }}
+				viewport={{ once: true }}
+				transition={{ duration: 0.5 }}
+			>
 				<div className="w-full border rounded-t-lg shadow-md bg-secondary">
 					<ul className="text-xl font-bold text-center text-white divide-x sm:flex">
 						<li className="w-full">
 							<div className="inline-block w-full p-4 text-white rounded-t-lg bg-primary">
-								{userDisplayName ? userDisplayName : <Loader />}
+								{userDisplayName ? userDisplayName : ' '}
 							</div>
 						</li>
 					</ul>
@@ -96,7 +103,7 @@ const Profil: NextPage = () => {
 						/>
 					</div>
 				</div>
-			</div>
+			</motion.div>
 		</>
 	);
 };

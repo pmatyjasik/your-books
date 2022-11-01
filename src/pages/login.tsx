@@ -14,6 +14,7 @@ import login from 'assets/login.json';
 import Lottie from 'lottie-react';
 import HeadInformation from 'components/HeadInformation';
 import UnAuthorizedPage from 'hoc/UnAuthorized';
+import { motion } from 'framer-motion';
 
 const initialValues = {
 	email: '',
@@ -48,7 +49,13 @@ const Login: NextPage = () => {
 	return (
 		<>
 			<HeadInformation title={'Login'} content={'Login'} />
-			<div className="flex justify-center p-6 text-white border border-solid rounded-lg shadow-xl bg-secondary border-secondary">
+			<motion.div
+				className="flex justify-center p-6 text-white border border-solid rounded-lg shadow-xl bg-secondary border-secondary"
+				initial={{ opacity: 0.8, scale: 0.9 }}
+				whileInView={{ opacity: 1, scale: 1 }}
+				viewport={{ once: true }}
+				transition={{ duration: 0.5 }}
+			>
 				<div className="items-center justify-center hidden w-1/2 lg:flex">
 					<Lottie
 						animationData={login}
@@ -99,7 +106,7 @@ const Login: NextPage = () => {
 						)}
 					</Formik>
 				</div>
-			</div>
+			</motion.div>
 		</>
 	);
 };

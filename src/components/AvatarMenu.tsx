@@ -7,6 +7,7 @@ import {
 	BsFillArrowDownCircleFill,
 	BsFillArrowUpCircleFill,
 } from 'react-icons/bs';
+import { motion } from 'framer-motion';
 
 const AvatarMenu = () => {
 	const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -31,7 +32,13 @@ const AvatarMenu = () => {
 				</div>
 			}
 			{isOpen && (
-				<div className="absolute right-0 z-10 mt-4 origin-top-right rounded-md shadow-lg w-max md:w-40 bg-main">
+				<motion.div
+					className="absolute right-0 z-10 mt-4 origin-top-right rounded-md shadow-lg w-max md:w-40 bg-main"
+					initial={{ opacity: 0.8, scale: 0.9 }}
+					whileInView={{ opacity: 1, scale: 1 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.1 }}
+				>
 					<div className="py-1 bg-gray-700 border border-gray-600 rounded-lg">
 						<AvatarMenuItemu onClick={() => router.push('/profile')}>
 							Profile
@@ -46,7 +53,7 @@ const AvatarMenu = () => {
 							Logout
 						</AvatarMenuItemu>
 					</div>
-				</div>
+				</motion.div>
 			)}
 		</div>
 	);

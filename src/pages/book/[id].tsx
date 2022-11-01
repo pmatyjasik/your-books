@@ -24,6 +24,12 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AiFillLike, AiFillDislike } from 'react-icons/ai';
+import { motion } from 'framer-motion';
+
+const variants = {
+	open: { x: 0, transition: { type: 'linear' } },
+	closed: { x: 100, transition: { type: 'linear' } },
+};
 
 const Book: NextPage = () => {
 	const [booknInCollection, setBooknInCollection] = useState<boolean>(false);
@@ -133,7 +139,13 @@ const Book: NextPage = () => {
 			)}
 			{isSuccess && (
 				<>
-					<div className="flex justify-center rounded-lg">
+					<motion.div
+						className="flex justify-center rounded-lg"
+						initial={{ opacity: 0.8, scale: 0.9 }}
+						whileInView={{ opacity: 1, scale: 1 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.5 }}
+					>
 						<div className="flex flex-col w-full rounded-lg shadow-xl lg:flex-row xl:w-4/5 bg-secondary">
 							<div className="w-full border rounded-lg shadow-md lg:w-2/5 border-primary ">
 								<div className="flex items-center justify-center p-2 rounded-lg bg-primary">
@@ -244,9 +256,14 @@ const Book: NextPage = () => {
 								)}
 							</div>
 						</div>
-					</div>
+					</motion.div>
 					{openNotes && booknInCollection && (
-						<div className="flex justify-center">
+						<motion.div
+							className="flex justify-center"
+							animate={openNotes ? 'open' : 'closed'}
+							initial="closed"
+							variants={variants}
+						>
 							<div className="flex flex-col justify-center w-full mt-4 rounded-lg bg-secondary xl:w-4/5">
 								<textarea
 									className="flex flex-col w-full p-2 text-white rounded-lg shadow-xl lg:flex-col bg-secondary"
@@ -256,7 +273,7 @@ const Book: NextPage = () => {
 								/>
 								<Button onClick={handleOnSave}>Save note</Button>
 							</div>
-						</div>
+						</motion.div>
 					)}
 					<ToastContainer />
 				</>
