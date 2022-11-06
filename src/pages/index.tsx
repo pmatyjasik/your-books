@@ -18,7 +18,7 @@ const Home: NextPage = () => {
 			<HeadInformation title={'Your Books'} content={'Your Books'} />
 			<div className="md:h-[80vh] md:p-4 mb-4 md:mb-0 xl:h-[90vh]">
 				<div className="flex flex-col justify-center md:items-center md:flex-row">
-					<div className="w-3/4 md:flex md:flex-col">
+					<div className="md:w-3/4 md:flex md:flex-col">
 						<motion.span
 							className="text-4xl font-semibold sm:text-5xl text-heading"
 							initial={{ y: -200, opacity: 0 }}
@@ -29,7 +29,7 @@ const Home: NextPage = () => {
 							YourBooks
 						</motion.span>
 						<motion.p
-							className="mt-5 text-2xl leading-relaxed sm:leading-loose text-content"
+							className="mt-5 text-2xl leading-relaxed sm:leading-loose text-content xl:w-4/5"
 							initial={{ x: -100, opacity: 0 }}
 							whileInView={{ x: 0, opacity: 1 }}
 							viewport={{ once: true }}
