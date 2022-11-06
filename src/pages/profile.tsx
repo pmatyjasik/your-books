@@ -12,7 +12,6 @@ import {
 	handleLougout,
 } from '../firebase/firebase';
 import { useState, useEffect } from 'react';
-import Loader from 'components/Loader';
 import { BookColumns } from 'service/Books/types';
 import { motion } from 'framer-motion';
 
