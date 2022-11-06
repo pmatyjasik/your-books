@@ -77,7 +77,7 @@ const Book: NextPage = () => {
 				userUID: user?.uid,
 				status: BookStatus.ToRead,
 				image: imageLinks?.thumbnail ? imageLinks?.thumbnail : '',
-				reccomendation: false,
+				reccomendation: null,
 				note: '',
 			});
 			setBooknInCollection((prev) => !prev);
@@ -209,7 +209,9 @@ const Book: NextPage = () => {
 											<div className="flex justify-center p-4">
 												<AiFillLike
 													className={`${
-														reccomendation ? 'text-primary' : 'text-white'
+														reccomendation === true && reccomendation !== null
+															? 'text-primary'
+															: 'text-white'
 													} w-8 h-8 mr-4`}
 													onDoubleClick={() =>
 														toast.success(
@@ -221,7 +223,9 @@ const Book: NextPage = () => {
 
 												<AiFillDislike
 													className={`${
-														!reccomendation ? 'text-primary' : 'text-white'
+														reccomendation === false && reccomendation !== null
+															? 'text-primary'
+															: 'text-white'
 													} w-8 h-8 ml-4`}
 													onDoubleClick={() =>
 														toast.success(

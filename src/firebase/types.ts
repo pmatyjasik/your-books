@@ -4,7 +4,7 @@ export interface Book {
 	status: BookStatus;
 	title: string;
 	image: string;
-	reccomendation: boolean;
+	reccomendation: boolean | null;
 	note: string;
 }
 
