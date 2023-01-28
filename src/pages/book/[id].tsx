@@ -1,5 +1,5 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { dehydrate, QueryClient, useQuery } from 'react-query';
 import { useRouter } from 'next/router';
 import { fetchBook } from 'service/book/fetchBooks';
