@@ -25,12 +25,12 @@ import type { BookColumns } from 'service/Books/types';
 import { Book, BookStatus, userDataInterface } from '../firebase/types';
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyDpp2AAU8HxZVZiLoDJBCTq9tomYWm4LCE',
-	authDomain: 'your-books-5893e.firebaseapp.com',
-	projectId: 'your-books-5893e',
-	storageBucket: 'your-books-5893e.appspot.com',
-	messagingSenderId: '632523389162',
-	appId: '1:632523389162:web:65b080b39bdcdd5c123f93',
+	apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+	authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+	projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+	storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+	messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+	appId: process.env.NEXT_PUBLIC_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
